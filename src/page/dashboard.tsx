@@ -1,7 +1,8 @@
 import { Statistic, Card, Row, Col } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
+
 const Dashboard = (props:any)=>{
-    return (<div className="home" style={{padding: 20 }}>
+    return (<div className='home'>
       <Row gutter={16}>
         <Col span={12}>
           <Card>

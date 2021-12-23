@@ -1,0 +1,144 @@
+.meta-table-wrapper-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  // border-bottom: 1px dashed #f0f2f3;
+  padding: 0 16px;
+
+  .meta-table-wrapper-header-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .meta-table-wrapper-header-title {
+    font-weight: 500;
+    font-size: 16px;
+    margin-right: 16px;
+  }
+
+  .meta-table-wrapper-header-icon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    background-color: #f6f7f8;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .meta-table-wrapper-header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.meta-table-primary {
+  color: #1890ff;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.meta-table-filter {
+  width: 100%;
+  padding: 16px 16px 0 0;
+  text-align: left;
+
+  .CheckboxGroup {
+    .ant-checkbox-wrapper {
+      display: flex;
+      height: 32px;
+    }
+  }
+
+  button +button {
+    margin-left: 28px;
+  }
+
+  button {
+    margin-top: 9px;
+    width: 48px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 4px;
+    font-size: 12px;
+  }
+}
+
+.ant-table-thead>tr>th {
+  background: #f5f5f5 !important;
+  flex-grow: 0;
+  font-size: 14px !important;
+  line-height: 22px !important;
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.ant-table-tbody>tr>td {
+  color: rgba(0, 0, 0, 0.9) !important;
+}
+.ant-popover-inner-content{
+  // padding: 0;
+  border-radius: 8px;
+}
+
+.ant-table-filter-trigger{
+  padding: 0 10px 0 5px;
+}
+
+.meta-table-header {
+  background-color: #fff;
+  border-radius: 8px;
+  .meta-table-header-wrapper {
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    border-bottom: 1px dashed #f0f2f3;
+
+    .meta-table-header-wrapper-title {
+      font-size: 13px;
+      color: rgba(#000000, 0.45);
+      padding-bottom: 6px;
+    }
+
+    .meta-table-header-wrapper-item {
+      overflow-y: scroll;
+      max-height: 400px;
+      box-shadow: inset 0 -1px 0 0 #eceff1;
+      transition: 0.4s;
+
+      &:hover {
+        background-color: #f5f7ff;
+      }
+
+      .ant-checkbox-wrapper {
+        font-size: 13px;
+        line-height: 18px;
+        max-width: 148px;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0 16px;
+        align-items: center;
+        justify-content: space-between;
+        color: rgb(49 48 48 / 85%)
+      }
+    }
+
+    .meta-table-header-wrapper-button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 16px;
+      padding-top: 9px;
+      button{
+        width: 60px;
+        height: 28px;
+        margin-left: 16px;
+        font-size: 12px;
+      }
+    }
+  }
+
+}

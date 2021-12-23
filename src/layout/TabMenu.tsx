@@ -7,7 +7,6 @@ const refreshTab = (): void => {
 // tab右击菜单
 const TabMenu = (props: any) => {
   const {pane,onEdit} = props;
-  console.log(pane)
   const isDisabled = () => pane.key === 'dashboard'
   return (
     <Menu>

@@ -68,8 +68,8 @@ const TabPanes: FC<Props> = (props) => {
               <Dropdown overlay={tabMenu} placement="bottomLeft" trigger={['contextMenu']}>
                 <span onContextMenu={(e) => preventDefault(e, pane)}>{pane.title}</span>
               </Dropdown>
-            } key={pane.key} closable={pane.closabled}>
-              <div>
+            } key={pane.key} closable={pane.closabled} >
+              <div style={{paddingTop: 10}}>
                 <Component path={pane.path} />
               </div>
             </TabPane>)
