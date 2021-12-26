@@ -1,11 +1,14 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import { Table, Space } from "antd";
-
-import { MetaTableProps, MetaItem } from "@/core/types"
+import { MetaTableProps, MetaItem, ItemType } from "@/core/types"
 import MetaTableHeader from './MetaTableHeader'
-import { filterDropdown } from './Filter'
+import * as Formats from '@/core/format'
+import { filterDropdown } from './Filters'
 import "@/assets/table.less";
+
 const MetaTable = (props: MetaTableProps) => {
+  const navigate = useNavigate()
   const { title, preference, data, pagination } = props;
   const [selectedKeys, setSelectedKeys] = useState<string[]>((props.columns || [])
     .filter((col) => col.selected)
@@ -22,6 +25,26 @@ const MetaTable = (props: MetaTableProps) => {
       }
       : null,
   });
+
+  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
+    console.log(filters)
+    if (props.onChange) {
+      props.onChange(pagination, filters, sorter, extra)
+    }
+  }
+
+  const format = (item: MetaItem, text: any, record: any) => {
+    const format = ItemType[item.itemType] + "Format";
+    if (item.primaryProperty) {
+      return (<span
+        className="meta-table-primary"
+        onClick={() => navigate(props.redirect, {state: {...record}})}
+      >
+        {Formats.default[format](item, text, record)}
+      </span>)
+    }
+    return Formats.default[format](item, text, record);
+  };
   const setItem = (item: MetaItem) => {
     return {
       ...item,
@@ -33,15 +56,9 @@ const MetaTable = (props: MetaTableProps) => {
       fixed: item.primaryProperty ? true : false,
       width: item.primaryProperty ? 150 : 100,
       ...getColumnSearchProps(item),
-      // render: (text, record) => this.format(item, text, record),
+      render: (text:any, record:any) => format(item, text, record),
     };
   }
-  const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
-    if (props.onChange) {
-      props.onChange(pagination, filters, sorter, extra)
-    }
-  }
-
   const columns = (props.columns || [])
     .filter((col) =>
       selectedKeys.find((key) => key === col.apiKey)

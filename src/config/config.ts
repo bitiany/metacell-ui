@@ -4,6 +4,7 @@ export const TableDemo: MetaTableProps = {
   "label": "表格",
   "apiKey": "metaObject",
   "preference": true,
+  "redirect":"/_table/detail",
   "columns": [
     {
       "label": "编号",

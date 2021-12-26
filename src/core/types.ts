@@ -21,10 +21,11 @@ export type MetaTableProps = {
   label:string;
   apiKey?: string;
   title?:string;
-  columns?: any[];
+  columns?: MetaItem[];
   data?: any[];
   preference?:boolean;
   pagination?: any;
+  redirect?:any;
   onChange?: (pagination:any, filters:any, sorter:any, extra:any)=>void;
 }
 

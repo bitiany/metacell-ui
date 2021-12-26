@@ -47,6 +47,9 @@ module.exports = {
         minRatio: 0.8
       }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      // new webpack.ProvidePlugin({
+      //   process: 'process/browser',
+      // }),
     ]
   },
   babel: {

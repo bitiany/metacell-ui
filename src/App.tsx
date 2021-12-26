@@ -5,6 +5,7 @@ import zhCN from "antd/lib/locale-provider/zh_CN";
 import { Provider, Register } from "./redux";
 import MainLayout from "@/layout";
 import LoginPage from '@/page/login'
+import ErrorPage from "./page/errorPage";
 import config from "./config/config";
 
 import theme from "@/theme.less";
@@ -19,6 +20,7 @@ Register(UserInfo)
 ConfigProvider.config({
   prefixCls: theme.antPrefix,
 });
+ 
 const App: FC = (props: any) => {
   return (
     <ConfigProvider locale={zhCN} prefixCls={theme.antPrefix}>
@@ -32,6 +34,7 @@ const App: FC = (props: any) => {
                 element={<MainLayout {...props} />}
               />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/404" element={<ErrorPage />} />
             </Routes>
           </Router>
         </Provider>

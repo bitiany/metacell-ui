@@ -57,6 +57,7 @@
     "circular-dependency-plugin": "^5.2.2",
     "compression-webpack-plugin": "6.1.1",
     "craco-fast-refresh": "^1.1.0",
+    "react-error-overlay": "^6.0.9",
     "simple-progress-webpack-plugin": "^2.0.0",
     "style-loader": "^3.3.1",
     "webpack-bundle-analyzer": "^4.5.0"
