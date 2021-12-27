@@ -31,7 +31,8 @@ class AppInfo {
     if (type === "add") {
       return { ...state, panes: [...state.panes || [], ...pane], selectedKeys: [pane[0].key] }
     } else if (type === "clear") {
-      return {...state, panes: [...initPane]}
+      const s = {...state, panes: [...initPane], selectedKeys: [initPane[0].key]}
+      return s
     } else {
       return { ...state, panes: [...pane] }
     }

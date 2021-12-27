@@ -1,18 +1,22 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { Table, Space } from "antd";
 import { MetaTableProps, MetaItem, ItemType } from "@/core/types"
 import MetaTableHeader from './MetaTableHeader'
+
 import * as Formats from '@/core/format'
 import { filterDropdown } from './Filters'
+import { useStorage } from '@/redux'
 import "@/assets/table.less";
 
 const MetaTable = (props: MetaTableProps) => {
   const navigate = useNavigate()
   const { title, preference, data, pagination } = props;
   const [selectedKeys, setSelectedKeys] = useState<string[]>((props.columns || [])
-    .filter((col) => col.selected)
-    .map((col: any) => col.apiKey))
+  .filter((col) => col.selected)
+  .map((col: any) => col.apiKey))
+  const [panes, addTabPane] = useStorage("addTabPane", "panes")
+  const { pathname } = useLocation()
   const getColumnSearchProps = (item: MetaItem) => ({
     filterDropdown: item.filterabled
       ? ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => {
@@ -32,13 +36,32 @@ const MetaTable = (props: MetaTableProps) => {
       props.onChange(pagination, filters, sorter, extra)
     }
   }
-
+  const navigateComp = (nav: any) =>{
+    const {item} = nav
+    if(nav.redirect){
+      navigate(props.redirect, {state: {...nav.record}})
+    }else{
+      const pane = panes?.filter((p: any) => p.key === item.apiKey)[0]
+      const path = pane? pane.path : pathname + "/" + item.component + "?" + item.apiKey + "=" + nav.record[item.apiKey]
+      navigate(path, {state: {...nav.record}})
+      if(pane){
+        return
+      }
+      addTabPane([{
+        title: item.label,
+        key: item.apiKey,
+        content: item.component,
+        closabled: true,
+        path: path
+      }], "add")
+    }
+  }
   const format = (item: MetaItem, text: any, record: any) => {
     const format = ItemType[item.itemType] + "Format";
     if (item.primaryProperty) {
       return (<span
         className="meta-table-primary"
-        onClick={() => navigate(props.redirect, {state: {...record}})}
+        onClick = {() => navigateComp({redirect: props.redirect, item: item, record: record})}
       >
         {Formats.default[format](item, text, record)}
       </span>)

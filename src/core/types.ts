@@ -15,6 +15,7 @@ export interface MetaItem {
   pickOptions?: PickOption[],
   selected?: boolean;
   helpText?: string;
+  component?:string;
 }
 
 export type MetaTableProps = {

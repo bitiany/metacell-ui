@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Layout, BackTop } from "antd";
@@ -10,6 +9,10 @@ import Header from "./Header";
 import TabPanes from './TabPanes'
 import { at } from '@/utils/toolkit'
 import styles from './module/Home.module.less'
+
+const uri_parse = (url: string) => {
+  return url.split('?')[0]
+}
 
 const menu = StaticMenu.Menus
 const noNewTab = ['/login']
@@ -25,25 +28,26 @@ const MainLayout = (props: any) => {
     if (noNewTab.includes(pathname)) {
       return
     }
-    //todo 鉴权校验
     if (!userInfo.token) {
       navigate("/login")
     }
-    let item = at.find(menu, (m: any) => m.path?.indexOf(pathname) > -1, "children")
-    if (!item || selectedKeys?.includes(item.apiKey)) { return }
-    const pane = panes?.filter((p: any) => p.key === item.apiKey)[0]
-    if (pane || pathname === pathRef.current) {
-      setSelectedKeys([item.apiKey])
-      return
+    const pane = panes?.filter((p: any) => uri_parse(p.path) === pathname)[0]
+    if (pane) {
+      if (pathRef.current !== pathname) {
+        setSelectedKeys([pane.key])
+      }
+    } else {
+      let item = at.find(menu, (m: any) => m.path?.indexOf(pathname) > -1, "children")
+      if (!item || selectedKeys?.includes(item.apiKey)) { return }
+      addTabPane([{
+        title: item.label,
+        key: item.apiKey,
+        content: item.component,
+        closabled: true,
+        path: item.path
+      }], "add")
     }
     pathRef.current = pathname
-    addTabPane([{
-      title: item.label,
-      key: item.apiKey,
-      content: item.component,
-      closabled: true,
-      path: item.path
-    }], "add")
   })
   const loginOut = () => {
     setUserInfo({ userName: null, token: null, permission: [] })
@@ -51,7 +55,6 @@ const MainLayout = (props: any) => {
     addTabPane([], "clear")
     navigate("/login")
   }
-
   return (
     <Layout className={styles.container} style={{ display: pathname.includes('/login') ? 'none' : 'flex' }}>
       <BackTop />
@@ -59,7 +62,7 @@ const MainLayout = (props: any) => {
       <Layout className={classNames(styles.content)}>
         <Header collapsed={collapsed} menuClick={menuClick} loginOut={loginOut} />
         <Layout.Content>
-          <TabPanes defaultActiveKey="dashboard" activeKey={selectedKeys ? selectedKeys[0] : null} />
+          <TabPanes defaultActiveKey="dashboard" activeKey={selectedKeys ? selectedKeys[0] : null} {...props} />
         </Layout.Content>
       </Layout>
     </Layout>

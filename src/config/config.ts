@@ -4,7 +4,7 @@ export const TableDemo: MetaTableProps = {
   "label": "表格",
   "apiKey": "metaObject",
   "preference": true,
-  "redirect":"/_table/detail",
+  // "redirect":"/_table/detail",
   "columns": [
     {
       "label": "编号",
@@ -13,7 +13,8 @@ export const TableDemo: MetaTableProps = {
       "filterabled": true,
       "sortabled": true,
       "primaryProperty": true,
-      "selected": true
+      "selected": true,
+      "component": "detail"
     },
     {
       "label": "名称",

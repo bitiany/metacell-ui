@@ -5,7 +5,7 @@ export const StaticMenu: { Menus: IMenu[] } = {
     { apiKey: "kline", label: "Kline ", icon: "FundViewOutlined", component: "Demo", path: "/kline", sort: 5 },
     { apiKey: "table", label: "表格 ", icon: "CloudUploadOutlined", component: "Table", path: "/table?apiKey=abc", sort: 2 ,
       children: [
-        { apiKey: "metaItem", label: "新增",component: "Detail", path: "/_table/detail", hidden: true, sort: 1 }
+        // { apiKey: "metaItem", label: "新增",component: "Detail", path: "/_table/detail", hidden: true, sort: 1 }
       ]
     },
     {

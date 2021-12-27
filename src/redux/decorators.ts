@@ -14,3 +14,9 @@ export const Autowire = (target:any, name:any, descriptor: any) =>{
   injectStore(storeName, descriptor.value.call())
   return descriptor;
 }
+
+export const Component = (_component: any) => {
+  return (target:any) =>{
+    target._component = _component
+  }
+}
