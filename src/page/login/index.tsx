@@ -5,7 +5,7 @@ import { Form, Input, Button, message } from 'antd'
 import ReactCanvasNest from 'react-canvas-nest'
 import './login.less'
 import Logo from '@/assets/img/logo.png'
-
+import { hash } from '@/utils/toolkit'
 import { useStorage } from '@/redux'
 interface Props {}
 
@@ -16,7 +16,8 @@ const LoginForm: FC<Props> = () => {
   // 触发登录方法
   const onFinish = (values: any): void => {
     const { userName, password } = values
-    if (userName !== 'admin' && password !== '123456') {
+    const pwd = hash.aes(password, userName)
+    if (userName !== 'admin' || pwd !== 'vS%2BVWLkP4BcmaUGtvdL87g==') {
       message.error('用户名或密码错误')
       return
     }

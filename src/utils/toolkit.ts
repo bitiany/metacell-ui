@@ -1,4 +1,5 @@
 import * as at from './array'
+import * as hash from './hash'
 const pattern = /(\w+)=(\w+)/ig;
 
 const queryParam = (query: string) => {
@@ -15,5 +16,6 @@ const queryParam = (query: string) => {
 
 export {
   at,
-  queryParam
+  queryParam,
+  hash
 }; 
