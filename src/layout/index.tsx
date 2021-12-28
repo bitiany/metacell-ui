@@ -7,11 +7,11 @@ import classNames from 'classnames'
 import Asider from "./Asider";
 import Header from "./Header";
 import TabPanes from './TabPanes'
-import { at } from '@/utils/toolkit'
+import { at, queryParam } from '@/utils/toolkit'
 import styles from './module/Home.module.less'
 
 const uri_parse = (url: string) => {
-  return url.split('?')[0]
+  return url?.split('?')[0]
 }
 
 const menu = StaticMenu.Menus
@@ -19,7 +19,7 @@ const noNewTab = ['/login']
 const MainLayout = (props: any) => {
   const navigate = useNavigate();
   const pathRef: any = useRef<string>('')
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const [collapsed, menuClick] = useStorage("menuToggle", "collapsed")
   const [panes, addTabPane] = useStorage("addTabPane", "panes")
   const [selectedKeys, setSelectedKeys] = useStorage("setSelectedKeys", "selectedKeys")
@@ -31,13 +31,14 @@ const MainLayout = (props: any) => {
     if (!userInfo.token) {
       navigate("/login")
     }
-    const pane = panes?.filter((p: any) => uri_parse(p.path) === pathname)[0]
+    const para = queryParam(search) || {}
+    const pane = panes?.filter((p: any) => (uri_parse(p.path) === pathname && (!para["apiKey"] || para["apiKey"] ===  p.key)))[0]
     if (pane) {
-      if (pathRef.current !== pathname) {
+      if (pathRef.current !== pathname + search) {
         setSelectedKeys([pane.key])
       }
     } else {
-      let item = at.find(menu, (m: any) => m.path?.indexOf(pathname) > -1, "children")
+      let item = at.find(menu, (m: any) => (uri_parse(m.path) === pathname && (!para["apiKey"] || para["apiKey"] ===  m.apiKey)), "children")
       if (!item || selectedKeys?.includes(item.apiKey)) { return }
       addTabPane([{
         title: item.label,
@@ -47,7 +48,7 @@ const MainLayout = (props: any) => {
         path: item.path
       }], "add")
     }
-    pathRef.current = pathname
+    pathRef.current = pathname + search
   })
   const loginOut = () => {
     setUserInfo({ userName: null, token: null, permission: [] })

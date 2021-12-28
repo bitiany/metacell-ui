@@ -7,10 +7,8 @@ const receiveData = (data:any, namespace?:string) => ({
   namespace
 });
 
-
 export const setStoreState = (type:string, state?: any, ...data:any): any =>{
-  const func = getFunc(type)
   const ns = namespace(type)
-  state[ns] = func(state[ns], ...data)
+  state[ns] = getFunc(type)(state[ns], ...data)
   return receiveData(state, ns);
 }

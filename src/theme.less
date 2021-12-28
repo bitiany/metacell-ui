@@ -2,28 +2,14 @@
 @packageName: ''; // lessLoader 会改为 package.json name属性
 @ant-prefix: ~'@{packageName}';
 @ra-lib-prefix: ~'@{packageName}';
-// @charset "utf-8";
 
 :export {
     antPrefix: @ant-prefix;
     raLibPrefix: @ra-lib-prefix;
 }
 
-// 自定义变量
-//@page-content-margin: 0;
-//@page-content-padding: 0;
-//@content-margin: 0px;
-//@content-padding: 8px;
-//@layout-z-index: 999;
-//@layout-transition-duration: 0;
-
-// ant 官方变量
-// https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 @border-color-base: hsv(0, 0, 85%);
 
-//@primary-color: #42b983;
-//@layout-header-background: #42b983;
-//@menu-dark-inline-submenu-bg: #349368;
 @white: #ffffff;
 @primary-color-light: fade(lighten(@primary-color, 5%), 15%);
 @primary-color: #3f4d67; // 主题色
@@ -33,9 +19,6 @@
 @text-color: fade(#000, 65%);
 @body-background: #ffffff;
 @component-background: #fff;
-// @import '@/assets/css/form.less';
-// @import '@/assets/css/modal.less';
-// @import '@/assets/css/bpmn.less';
 /*!
  * @名称：base.css
  * @功能：1、重设浏览器默认样式
@@ -46,7 +29,6 @@ html {
   background: white;
   color: black;
   font-size: 10px;
-  // filter: grayscale(0.95);
 }
 body, html {
   height: 100%;

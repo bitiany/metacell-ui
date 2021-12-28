@@ -15,14 +15,12 @@ const renderMenuItemIcon = (icon: string) => {
 };
 
 const renderMenuItem = (item: IMenu) => {
-  const idx = item.path?.indexOf("?") || -1;
-  const path = item.path?.substring(0, (idx > -1 ? idx : item.path?.length));
   return (
     item.hidden ? null : <Menu.Item
       key={item.apiKey}
       icon={item.icon ? renderMenuItemIcon(item.icon) : null}
     >
-      <Link to={path || item.apiKey} state={{ ...queryParam(item.path || "") }}>
+      <Link to={item.path || item.apiKey} state={{ ...queryParam(item.path || "") }}>
         {<span className="nav-text">{item.label}</span>}
       </Link>
     </Menu.Item>

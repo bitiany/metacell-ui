@@ -1,7 +1,7 @@
 import MetaTable from '@/core/table/MetaTable';
-import { TableDemo } from '@/config/config'
-// import { useLocation } from 'react-router-dom'
-
+import { TableConfig } from '@/config/config'
+import { useLocation } from 'react-router-dom'
+import { queryParam } from '@/utils/toolkit'
 const data = [{
   key: 1,
   objectId: 1001,
@@ -10,11 +10,12 @@ const data = [{
 }]
 
 const Table = (props: any) => {
-  // const { state } = useLocation()
-  // state && console.log(state)
+  const { search,state }:any = useLocation()
+  const d = state?.apiKey ? state : queryParam(search)
+
   return (
     <div>
-      <MetaTable title={TableDemo.label} {...TableDemo} data={[...data]}></MetaTable>
+      <MetaTable title={TableConfig[d?.apiKey]?.label} {...TableConfig[d?.apiKey] || {}} data={[...data]}></MetaTable>
     </div>
   )
 }

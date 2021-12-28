@@ -1,4 +1,3 @@
-// import { REQUEST_DATA, RECEIVE_DATA } from "@/store/actionTypes";
 import {injectStore, injectMapper} from './store'
 
 export const Mapper = () => {
