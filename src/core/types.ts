@@ -8,9 +8,7 @@ export interface MetaItem {
   label?: string;
   apiKey?: string;
   itemType: number;
-  filterabled?: boolean;
   sortabled?: boolean;
-  primaryProperty?: boolean;
   extInfo?: any;
   pickOptions?: PickOption[],
   selected?: boolean;
@@ -18,11 +16,40 @@ export interface MetaItem {
   component?:string;
 }
 
+export interface MetaFormItemProps extends MetaItem {
+  editabled?: boolean;
+  required?: boolean;
+  component?: any;
+  defaultValue?: string;
+  data?:any;
+  setFieldValue?:(...data:any) =>void;
+}
+
+export interface MetaFormItem extends MetaItem{
+  required?: boolean;
+  control?:string;
+}
+
+export interface MetaForm {
+  title?:string;
+  data?: any;
+  items?: MetaFormItem[];
+}
+
+export interface MetaFormConfig {
+  [key:string]: MetaForm;
+}
+
+export interface MetaTableItem extends MetaItem{
+  filterabled?: boolean;
+  primaryProperty?: boolean;
+}
+
 export type MetaTableProps = {
   label:string;
-  apiKey?: string;
+  apiKey: string;
   title?:string;
-  columns?: MetaItem[];
+  columns?: MetaTableItem[];
   data?: any[];
   preference?:boolean;
   pagination?: any;
