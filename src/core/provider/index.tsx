@@ -1,11 +1,16 @@
 
 import ModalProvider from '@/core/provider/modal'
+import DrawerProvider  from './drawer'
 const AsyncProvider = (props: any) => {
-  // console.log("provider", props)
+  let Provider = null;
+  if(props.container && props.container === "drawer"){
+    Provider = DrawerProvider
+  }else{
+    Provider =  ModalProvider
+  }
   return (
     <div>
-      <ModalProvider {...props} />
+      <Provider {...props} />
     </div >)
 }
-
 export default AsyncProvider

@@ -7,7 +7,6 @@ export const StaticMenu: { Menus: IMenu[] } = {
           { apiKey: "system", label: "系统管理",component: "Table", path: "/table?apiKey=system",  sort: 1 },
           { apiKey: "application", label: "应用管理",component: "Table", path: "/table?apiKey=application",  sort: 2 }
         ]
-    },
-    { apiKey: "bpmn", label: "bpmn ", icon: "UserOutlined", component: "Dashboard", path: "/bpmn", sort: 3 },
+    }
   ]
 }

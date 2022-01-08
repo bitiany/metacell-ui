@@ -11,15 +11,17 @@ export interface MetaInputProps extends MetaItem {
 
 export const MetaLabel = (item: any) => {
   return (
-    <div className="meta-item-label">
-      <div className="meta-item-label-name">
-        {item.required ? <span className="meta-item-required">*</span> : <span className="meta-item-required" style={{marginLeft: '7px'}}></span>}
-        <span className="meta-item-label-name">{item.label}</span>
-        {item.helpText ? (
-          <Tooltip placement="right" title={item.helpText}>
-            <QuestionCircleOutlined className="meta-item-label-help" />
-          </Tooltip>
-        ) : null}
+    <div className="meta-item-wrapper">
+      <div className="meta-item-label">
+        <div className="meta-item-label-name">
+          {/* {item.required ? <span className="meta-item-required">*</span> : <span className="meta-item-required" style={{marginLeft: '7px'}}></span>} */}
+          <span className="meta-item-label-name">{item.label}</span>
+          {item.helpText ? (
+            <Tooltip placement="right" title={item.helpText}>
+              <QuestionCircleOutlined className="meta-item-label-help" />
+            </Tooltip>
+          ) : null}
+        </div>
       </div>
     </div>
   );

@@ -14,8 +14,9 @@ interface ModalProps {
 const ModalProvider = (props: ModalProps) => {
   const modalRef: any = useRef({submit: null})
   const handleOk = () => {
-    modalRef.current.submit()
-    props.setVisible(false)
+    modalRef.current.submit(()=>{
+      props.setVisible(false)
+    })
   };
   const handleCancel = () => {
     props.setVisible(false);

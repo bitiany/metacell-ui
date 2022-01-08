@@ -36,7 +36,7 @@ const MetaTable = (props: MetaTableProps) => {
       props.onChange(pagination, filters, sorter, extra)
     }
   }
-  const showProvider = useEvent("showProvider", { title: "新增", apiKey: props.apiKey, data: {}, component: "form" })
+  const showProvider = useEvent("showProvider", { title: "新增",container: "drawer",  apiKey: props.apiKey, data: {}, component: "form" })
   const add = () => {
     showProvider(() => { })
   }

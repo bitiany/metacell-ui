@@ -5,6 +5,7 @@ interface EventType {
   apiKey: string;
   component?:string;
   data?: any;
+  container?:string
 }
 
 export const useEvent = (type: string, state: EventType) => {

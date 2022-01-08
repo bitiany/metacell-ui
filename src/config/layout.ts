@@ -45,7 +45,7 @@ export const Layout:MetaFormConfig = {
         label: "系统LOGO",
         apiKey: "logo",
         itemType: 1,
-        required: true,
+        required: false,
         helpText: "系统LOGO",
         extInfo: {
           suffix: "",

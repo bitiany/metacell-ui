@@ -5,10 +5,15 @@ import {  MetaForm } from "@/core/types";
 const FromLayout = (props: any) => {
   const formRef: any = useRef<any>('')
   const {apiKey, refs} = props;
-
-  const onSubmit = () => {
-    formRef.current.submit()
-  }
+  const onSubmit = async (callback:any) => {
+    try {
+      const values = await formRef.current.validateFields();
+      console.log('Success:', values);
+      callback()
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo);
+    }
+  };
   const onRef = (ref: any) =>{
     formRef.current = ref
   }

@@ -1,4 +1,4 @@
-import { useRef, useEffect,forwardRef } from "react";
+import { useEffect, forwardRef } from "react";
 import { Form } from "antd";
 import MetaItemWrapper from './MetaItemWrapper'
 import { ItemType, MetaFormItemProps, MetaForm, MetaFormItem } from "@/core/types";
@@ -6,21 +6,21 @@ import MetaElements from './element';
 import getComponent from '@/components';
 import '@/assets/form.less'
 
-const MetaFormLayout =forwardRef((props: any, _ref:any) => {
-  const formRef: any = useRef<any>('')
+const MetaFormLayout = forwardRef((props: any, _ref: any) => {
+  const [form] = Form.useForm();
   const onFinish = (values: any) => {
     console.log(values)
   };
-  useEffect(()=> {
-    props.onRef(formRef.current)
+  useEffect(() => {
+    props.onRef(form)
   })
-  const setFieldValue = (data:any) => {
-    if(formRef && formRef.current){
-      formRef.current!.setFieldsValue(data);
+  const setFieldValue = (data: any) => {
+    if (form) {
+      form.setFieldsValue(data);
     }
   };
   const itemWrapper = (item: MetaFormItemProps) => {
-    const Component =getComponent({ name: item?.component?.toLowerCase(), state: {} }) || MetaElements["Meta" + ItemType[item.itemType]]
+    const Component = getComponent({ name: item?.component?.toLowerCase(), state: {} }) || MetaElements["Meta" + ItemType[item.itemType]]
     return (<MetaItemWrapper
       component={Component}
       key={item.apiKey}
@@ -29,15 +29,15 @@ const MetaFormLayout =forwardRef((props: any, _ref:any) => {
       {...item}
     />)
   }
-  const layout:MetaForm = props.layout
+  const layout: MetaForm = props.layout
   return (
     <div style={{ padding: "0 10px" }}>
-      <Form name="basic" onFinish={onFinish} ref={formRef}>
-          {layout?.items?.map((item:MetaFormItem) => itemWrapper(item))}
+      <Form name="basic" onFinish={onFinish} form={form} validateTrigger={["onChange", "onBlur"]}>
+        {layout?.items?.map((item: MetaFormItem) => itemWrapper(item))}
       </Form>
     </div>
   )
 }
-) 
+)
 export default MetaFormLayout;
 
