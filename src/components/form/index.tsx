@@ -1,15 +1,22 @@
 import { useEffect,useRef } from 'react';
 import MetaFormLayout from '@/core/form/MetaForm';
 import {Layout} from '@/config/layout';
-import {  MetaForm } from "@/core/types";
+import {MetaForm} from "@/core/types";
+import { message } from 'antd';
+import api from '@/api'
 const FromLayout = (props: any) => {
   const formRef: any = useRef<any>('')
   const {apiKey, refs} = props;
   const onSubmit = async (callback:any) => {
     try {
       const values = await formRef.current.validateFields();
-      console.log('Success:', values);
-      callback()
+      api(apiKey)?.save(values).then(resp => {
+        message.info('保存成功');
+        callback()
+      }).catch(resp => {
+        console.log(resp)
+        message.error(resp.data?.message);
+      })
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
     }

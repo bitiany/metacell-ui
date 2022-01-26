@@ -21,7 +21,7 @@ export default class MetaSelect extends React.Component<MetaInputProps, any> {
   }
   onChange =(value: any) =>{
     let data = {}
-    data[this.props.apiKey || ""] =(this.state.extInfo?.selectType || 1) === 1 ?value[0] : value
+    data[this.props.apiKey || ""] =(this.state.extInfo?.selectType || 1) === 1 ? value : value
     this.props.setFieldValue(data, false)
   }
   render() {
@@ -31,7 +31,7 @@ export default class MetaSelect extends React.Component<MetaInputProps, any> {
         ?.filter((option:any) => option.defaultOption)
         .map((option:any) => option.code) || [];
     if (!this.props.defaultValue) {
-      this.onChange(defaultOption)
+      this.onChange(defaultOption[0])
     }
     const mode =
       (this.state.extInfo?.selectType || 1) === 1 ? undefined : "multiple";

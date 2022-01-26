@@ -1,26 +1,25 @@
-import React from "react";
 import { DatePicker } from "antd";
 import moment from "moment";
 
-export default class MetaInput extends React.Component<any> {
-  onChange =(value: any) =>{
+const MetaDate = (props: any) => {
+  const onChange = (value: any) => {
     let data = {}
-    data[this.props.apiKey || ""] = moment(value).toDate().getTime()
-    this.props.setFieldValue(data, false)
+    data[props.apiKey || ""] = moment(value).toDate().getTime()
+    props.setFieldValue(data, false)
   }
-  render() {
-    const placeholder = "请输入" + this.props.label;
-    const showTime = this.props.extInfo?.dateType === 2;
-    return (
-      <DatePicker
-        allowClear
-        name={this.props.apiKey}
-        showTime={showTime}
-        placeholder={placeholder}
-        disabled={this.props.editabled}
-        onChange={this.onChange}
-        style={{ width: "100%" }}
-      />
-    );
-  }
+  const placeholder = "请输入" + props.label;
+  const showTime = props.extInfo?.dateType === 2;
+  return (
+    <DatePicker
+      allowClear
+      name={props.apiKey}
+      showTime={showTime}
+      placeholder={placeholder}
+      disabled={props.editabled}
+      onChange={onChange}
+      style={{ width: "100%" }}
+    />
+  );
 }
+
+export default MetaDate;

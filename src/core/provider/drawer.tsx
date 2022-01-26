@@ -11,7 +11,6 @@ const DrawerProvider = (props: any) => {
     modalRef.current.submit(()=>{
       props.setVisible(false)
     })
-    // props.setVisible(false)
   };
   const Component = getComponent({ name: component, state: {} })
   return (

@@ -18,7 +18,15 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const proxy = require('./proxy.ts')
 module.exports = {
   devServer: {
-    proxy: proxy
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9101',
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": '/'
+        }
+      }
+    }
   },
   webpack: {
     // 设置别名

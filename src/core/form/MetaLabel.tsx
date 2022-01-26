@@ -10,11 +10,11 @@ export interface MetaInputProps extends MetaItem {
 }
 
 export const MetaLabel = (item: any) => {
+  const style = item.required ? {} : {marginLeft: "10px"}
   return (
-    <div className="meta-item-wrapper">
+    <div className="meta-item-wrapper"  style={style}>
       <div className="meta-item-label">
         <div className="meta-item-label-name">
-          {/* {item.required ? <span className="meta-item-required">*</span> : <span className="meta-item-required" style={{marginLeft: '7px'}}></span>} */}
           <span className="meta-item-label-name">{item.label}</span>
           {item.helpText ? (
             <Tooltip placement="right" title={item.helpText}>

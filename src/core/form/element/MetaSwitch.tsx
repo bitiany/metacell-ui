@@ -5,7 +5,6 @@ export default class MetaSwitch extends React.Component<any> {
   state = {
     val: this.props.data ? this.props.data[this.props.apiKey] : true
   }
-
   componentDidMount = ()=>{
     let data = {}
     data[this.props.apiKey || ""] = this.state.val
@@ -15,7 +14,6 @@ export default class MetaSwitch extends React.Component<any> {
       clearTimeout()
     }, 100)
   }
-
   onChange =(value: any) =>{
     let data = {}
     data[this.props.apiKey || ""] = value
@@ -28,6 +26,7 @@ export default class MetaSwitch extends React.Component<any> {
         disabled={this.props.editabled}
         onChange={this.onChange}
         checked={ this.state.val}
+        {...this.props.extInfo}
       />
     );
   }

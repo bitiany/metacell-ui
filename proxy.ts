@@ -1,13 +1,9 @@
 const proxy = {
   '/api': {
-    target: 'http://localhost:8080',
+    target: 'http://localhost:9101',
     changeOrigin: true,
     pathRewrite: {
       "^/api": '/'
     }
-  },
-  '/hy': {
-    target: 'http://localhost:9000',
-    changeOrigin: true,
   }
 }

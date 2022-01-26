@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Table, Space, Button } from "antd";
+import {RedoOutlined} from '@ant-design/icons'
 import { MetaTableProps, MetaTableItem, ItemType } from "@/core/types"
 import MetaTableHeader from './MetaTableHeader'
 import { useEvent } from '@/utils/hooks'
@@ -31,12 +32,11 @@ const MetaTable = (props: MetaTableProps) => {
   });
 
   const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
-    console.log(filters)
     if (props.onChange) {
       props.onChange(pagination, filters, sorter, extra)
     }
   }
-  const showProvider = useEvent("showProvider", { title: "新增",container: "drawer",  apiKey: props.apiKey, data: {}, component: "form" })
+  const showProvider = useEvent("showProvider", { title: "新增",container: "modal",  apiKey: props.apiKey, data: {}, component: "form" })
   const add = () => {
     showProvider(() => { })
   }
@@ -81,22 +81,46 @@ const MetaTable = (props: MetaTableProps) => {
       key: item.apiKey,
       sorter: item.sortabled,
       fixed: item.primaryProperty ? true : false,
-      // width: item.primaryProperty ? 150 : 100,
+      pagination:{
+        defaultCurrent: 1,
+        defaultPageSize: 10,
+        pageSizeOptions: ["10", "20", "100"],
+        ...props.pagination
+      },
       ...getColumnSearchProps(item),
       render: (text: any, record: any) => format(item, text, record),
     };
   }
-  const columns = (props.columns || [])
-    .filter((col) =>
+
+  let columns = (props.columns || []).filter((col) =>
       selectedKeys.find((key) => key === col.apiKey)
-    )
-    .map((col: any) => setItem(col));
+    ).map((col: any) => setItem(col));
+
+  const onOperator = (type: string, e: any) => {
+    props.onOperator && props.onOperator(type, e)
+  }
+
+  const renderOperation = (operation: any[], text:any, record:any) => {
+    if(operation?.length >= 3){
+
+    }else{
+      return props.operation?.map(op => <Button key={op.name} type="dashed" onClick={(e)=> onOperator(op.type, record)}>{op.name}</Button>)
+    }
+  }
+  const operate = props.operation ? [{
+      title: "操作", key: "opt", width: 150,
+      render: (text:any, record:any) => (
+        <Space>
+          {renderOperation(props.operation || [], text, record)}
+        </Space>
+      )
+    }] : [] 
   return (
     <div className="meta-table-wrapper">
       <div className="meta-table-wrapper-header">
         <div className="meta-table-wrapper-header-left">
           <div className="meta-table-wrapper-header-title">
-            {title}
+            <Space>{title}</Space><RedoOutlined />
           </div>
           {preference && <MetaTableHeader
             columns={props.columns}
@@ -118,7 +142,7 @@ const MetaTable = (props: MetaTableProps) => {
         <div className="meta-table">
           <Table
             dataSource={data}
-            columns={columns}
+            columns={[...columns, ...operate]}
             onChange={onChange}
             pagination={{ ...pagination }}
             scroll={{ x: true }}

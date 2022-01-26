@@ -10,7 +10,7 @@ const MetaItemWrapper: FC<MetaFormItemProps> = (props: MetaFormItemProps, data?:
   const Component = props.component
   return (<Row>
     <Col span={24}>
-      <Form.Item name={props.apiKey} label={MetaLabel({ ...props })} style={{ marginBottom: "20px" }} required={props.required} validateFirst={false}
+      <Form.Item name={props.apiKey} label={MetaLabel({ ...props })} style={{ marginBottom: "20px" }}  validateFirst={false}
         rules={[{ required: props.required, message: `请输入${props.label}`}]} >
         <div className="meta-item-wrapper">
           <Col span={spanNum()[1]}>
@@ -23,5 +23,4 @@ const MetaItemWrapper: FC<MetaFormItemProps> = (props: MetaFormItemProps, data?:
     </Col>
   </Row>)
 }
-
 export default MetaItemWrapper

@@ -1,20 +1,18 @@
 import React from "react";
 import { InputNumber } from "antd";
 
-export default class MetaInput extends React.Component<any> {
-  render() {
-    const placeholder = "请输入" + this.props.label;
-    const step = Math.pow(10, -this.props.extInfo?.decimal || 0);
-
+const MetaNumber = (props:any) => {
+    const placeholder = "请输入" + props.label;
+    const step = Math.pow(10, - props.extInfo?.decimal || 0);
     return (
       <InputNumber
         step={step}
-        name={this.props.apiKey}
+        name={props.apiKey}
         placeholder={placeholder}
-        disabled={this.props.editabled}
-        {...this.props.extInfo}
+        disabled={props.editabled}
+        {...props.extInfo}
         style={{ width: "100%" }}
       />
     );
-  }
 }
+export default MetaNumber

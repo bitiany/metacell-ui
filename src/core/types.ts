@@ -1,7 +1,7 @@
 export interface PickOption{
   name: string;
   code: string;
-  defaultOption: boolean;
+  defaultOption?: boolean;
 }
 
 export interface MetaItem {
@@ -54,7 +54,9 @@ export type MetaTableProps = {
   preference?:boolean;
   pagination?: any;
   redirect?:any;
+  operation?:any[] 
   onChange?: (pagination:any, filters:any, sorter:any, extra:any)=>void;
+  onOperator?:(type:string, data:any) => void
 }
 
 export interface MetaFilter extends MetaItem {

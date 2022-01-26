@@ -30,14 +30,11 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
     />)
   }
   const layout: MetaForm = props.layout
-  return (
-    <div style={{ padding: "0 10px" }}>
-      <Form name="basic" onFinish={onFinish} form={form} validateTrigger={["onChange", "onBlur"]}>
-        {layout?.items?.map((item: MetaFormItem) => itemWrapper(item))}
-      </Form>
-    </div>
-  )
-}
-)
+  return (<div style={{ padding: "0 10px" }}>
+    <Form name="basic" onFinish={onFinish} form={form} validateTrigger={["onChange", "onBlur"]}>
+      {layout?.items?.map((item: MetaFormItem) => itemWrapper(item))}
+    </Form>
+  </div>)
+})
 export default MetaFormLayout;
 
