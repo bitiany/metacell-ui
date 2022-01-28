@@ -101,7 +101,7 @@ const TabPanes: FC<Props> = (props: any) => {
               </Dropdown>
             } key={pane.key} closable={pane.closabled} >
               {!isReload && selectedKeys?.includes(pane.key) ? (
-                <div style={{ paddingTop: 10 }}>
+                <div className={"content"} style={{ paddingTop: 10,minHeight:"88vh" }}>
                   <React.Suspense fallback={<div>loading...</div>}>
                     <Component {...pane} />
                   </React.Suspense>

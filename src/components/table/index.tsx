@@ -13,7 +13,7 @@ const Table = (props: any) => {
   const [pagination, setPagination] = useState<any>({})
 
   const seachPage = (param?: any)=>{
-    api(d?.apiKey)?.list(param).then((resp: any) =>{
+    api(d?.apiKey)?.pageList(param).then((resp: any) =>{
       setData(resp["result"]?.records?.map((r: any) => {
         return { key: r.id, ...r }
       }))

@@ -132,9 +132,6 @@ const MetaTable = (props: MetaTableProps) => {
         <div className="meta-table-wrapper-header-right">
           <Space>
             <Button type="primary" onClick={add}>新增</Button>
-            {/* {this.props.buttons?.map((button) =>
-                MetaButton(button, this.props.apiKey)
-              )} */}
           </Space>
         </div>
       </div>

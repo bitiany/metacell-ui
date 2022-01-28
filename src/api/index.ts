@@ -3,19 +3,19 @@ import {getSystem, getDatasource, deleteDatasource, saveDatasource} from './aps'
  const api = (apiKey?: string)=>{
   if(apiKey === "datasource"){
     return {
-      list: getDatasource,
+      pageList: getDatasource,
       save: saveDatasource,
       delete: deleteDatasource
     }
   }else if (apiKey === "system"){
     return {
-      list: getSystem,
+      pageList: getSystem,
       delete: deleteDatasource,
       save: saveDatasource
     }
   }
   return {
-    list: getSystem,
+    pageList: getSystem,
     delete: deleteDatasource,
     save: saveDatasource
   }

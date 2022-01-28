@@ -5,7 +5,7 @@ export const getSystem = (param?:any)=>{
 }
 
 export const getDatasource = (param?:any)=>{
-  return get("/api/aps/v1/datasource/list", param);
+  return get("/api/aps/v1/datasource/pageList", param);
 }
 
 export const saveDatasource = (data:any)=>{

@@ -19,7 +19,7 @@ export interface MetaItem {
 export interface MetaFormItemProps extends MetaItem {
   editabled?: boolean;
   required?: boolean;
-  component?: any;
+  control?: any;
   defaultValue?: string;
   data?:any;
   setFieldValue?:(...data:any) =>void;

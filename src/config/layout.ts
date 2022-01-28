@@ -33,6 +33,21 @@ export const Layout:MetaFormConfig = {
         },
       },
       {
+        label: "数据源",
+        apiKey: "datasourceId",
+        itemType: 1,
+        sortabled: false,
+        selected: true,
+        required: false,
+        helpText: "数据源",
+        control: "datasource",
+        extInfo: {
+          suffix: "",
+          prefix: "",
+          maxLength: 10,
+        },
+      },
+      {
         label: "系统ICON",
         apiKey: "logo",
         itemType: 1,
