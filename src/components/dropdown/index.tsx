@@ -1,23 +1,23 @@
 import { useState } from "react";
 import {Select } from "antd";
+import api from "@/api";
+import {toCamelCase} from '@/utils/toolkit'
+
 const { Option } = Select;
-const Datasource = (props:any) => {
-    const [options, setOptions] = useState([{ tableName: "", name: "" }]);
+const MetaDropdown = (props:any) => {
+    const [options, setOptions] = useState([{ code: "", name: "" }]);
     const [initialState, setInitialState] = useState(false);
 
-    const toCamelCase = function(str:string) {
-      return str.replace("p_", "")
-          .replace(/_(\w)/g, function($1, letter) { return letter.toUpperCase(); });
-    }
     if (!initialState) {
       setInitialState(true);
-      // getTableName()
-      //   .then((obj: any) => {
-      //     setOptions(obj.data);
-      //   })
-      //   .catch((data) => {
-      //     console.log(data);
-      //   });
+      api().list(props.apiKey).then((resp: any) => {
+        setOptions(resp.result?.map((r:any) => {
+          if(props.control?.format){
+            return props.control?.format(r)
+          }
+          return r
+        }))
+      })
     }
     const onChange = (value: any, obj: any) => {
       let data = {
@@ -31,11 +31,11 @@ const Datasource = (props:any) => {
     return (
       <Select allowClear onChange={onChange}>
         {options && options?.map((option) => (
-          <Option key={option.tableName} value={option.tableName}>
+          <Option key={option.code} value={option.name}>
             {option.name}
           </Option>
         ))}
       </Select>
     );
   }
-export default Datasource;
+export default MetaDropdown;

@@ -40,7 +40,16 @@ export const Layout:MetaFormConfig = {
         selected: true,
         required: false,
         helpText: "数据源",
-        control: "datasource",
+        control: {
+          component: "dropdown",
+          apiKey: "datasource",
+          format: (data:any) =>{
+            return {
+              code: data.id,
+              name: data.host + ":" + data.port + "/" + data.database
+            }
+          }
+        },
         extInfo: {
           suffix: "",
           prefix: "",

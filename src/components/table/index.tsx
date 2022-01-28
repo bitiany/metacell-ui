@@ -30,7 +30,7 @@ const Table = (props: any) => {
       })
     }
     pathRef.current = pathname + search
-  }, [pathname, search, d, pagination])
+  })
   const onChange = (pagination: any, filters: any, sorter: any, extra: any)=>{
     setPagination({...pagination, current:pagination.current, size: pagination.pageSize}) 
     seachPage({

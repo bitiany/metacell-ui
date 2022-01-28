@@ -16,3 +16,7 @@ export const saveDatasource = (data:any)=>{
 export const deleteDatasource = (id:string) => {
   return del("/api/aps/v1/datasource/" + id)
 }
+
+export const listDatasource = (id:string) => {
+  return get("/api/aps/v1/datasource/list")
+}

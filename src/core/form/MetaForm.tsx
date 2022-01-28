@@ -20,7 +20,11 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
     }
   };
   const itemWrapper = (item: MetaFormItemProps) => {
-    const Component = getComponent({ name: item?.control?.toLowerCase(), state: {...item} }) || MetaElements["Meta" + ItemType[item.itemType]]
+    const Component = getComponent({ name: item?.control?.component.toLowerCase(), 
+      state: {...item, 
+        apiKey: item?.control?.apiKey
+      } }) 
+    || MetaElements["Meta" + ItemType[item.itemType]]
     return (<MetaItemWrapper
       component={Component}
       key={item.apiKey}

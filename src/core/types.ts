@@ -13,7 +13,7 @@ export interface MetaItem {
   pickOptions?: PickOption[],
   selected?: boolean;
   helpText?: string;
-  component?:string;
+  component?:any;
 }
 
 export interface MetaFormItemProps extends MetaItem {
@@ -25,9 +25,15 @@ export interface MetaFormItemProps extends MetaItem {
   setFieldValue?:(...data:any) =>void;
 }
 
+export interface MetaControl {
+  component: string;
+  apiKey?: string;
+  format?: (data:any) =>void
+}
+
 export interface MetaFormItem extends MetaItem{
   required?: boolean;
-  control?:string;
+  control?:MetaControl;
 }
 
 export interface MetaForm {
