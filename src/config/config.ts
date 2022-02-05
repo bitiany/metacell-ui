@@ -12,26 +12,23 @@ export const TableConfig:TableConfigType = {
     "preference": true,
     "columns": [
       {
-        "label": "编号",
-        "apiKey": "objectId",
+        "label": "应用编号",
+        "apiKey": "id",
         "itemType": 1,
         "filterabled": true,
         "sortabled": true,
         "primaryProperty": true,
         "selected": true,
-        "component": "detail"
+        "component": "application",
+        control: {
+          title: "编辑应用",
+          component: "application",
+          apiKey: "application"
+        }
       },
       {
         "label": "名称",
-        "apiKey": "name",
-        "itemType": 1,
-        "filterabled": true,
-        "sortabled": false,
-        "selected": true
-      },
-      {
-        "label": "应用名称",
-        "apiKey": "apiKey",
+        "apiKey": "appName",
         "itemType": 1,
         "filterabled": true,
         "sortabled": false,
@@ -43,7 +40,7 @@ export const TableConfig:TableConfigType = {
         "itemType": 5,
         "filterabled": true,
         "sortabled": false,
-        "selected": true,
+        "selected": true
       },
       {
         "label": "描述",
@@ -51,6 +48,12 @@ export const TableConfig:TableConfigType = {
         "itemType": 1,
         "filterabled": false,
         "sortabled": false
+      }
+    ],
+    operation: [
+      {
+        name:"删除",
+        type: "delete"
       }
     ]
   },
@@ -69,7 +72,7 @@ export const TableConfig:TableConfigType = {
       },
       {
         "label": "系统编号",
-        "apiKey": "systemCode",
+        "apiKey": "id",
         "itemType": 1,
         "filterabled": true,
         "sortabled": false,
@@ -96,15 +99,23 @@ export const TableConfig:TableConfigType = {
         "apiKey": "description",
         "itemType": 1,
         "filterabled": false,
-        "sortabled": false
+        "sortabled": false,
+        "selected": true,
       },
       {
         "label": "版本号",
         "apiKey": "version",
         "itemType": 1,
         "filterabled": false,
-        "sortabled": false
+        "sortabled": false,
+        "selected": true,
       },
+    ],
+    operation: [
+      {
+        name:"删除",
+        type: "delete"
+      }
     ]
   },
   datasource: {

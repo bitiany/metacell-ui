@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 import { Form, Row, Col } from "antd";
 import { MetaLabel } from './MetaLabel';
-import { MetaFormItemProps } from "@/core/types";
+import { MetaFormItem } from "@/core/types";
 
 export const spanNum = (size?: number) => {
   return [6, 18]
 }
-const MetaItemWrapper: FC<MetaFormItemProps> = (props: MetaFormItemProps, data?: any) => {
+const MetaItemWrapper: FC<MetaFormItem> = (props: MetaFormItem, data?: any) => {
   const Component = props.component
   return (<Row>
     <Col span={24}>

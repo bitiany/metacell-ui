@@ -14,10 +14,12 @@ const Table = (props: any) => {
 
   const seachPage = (param?: any)=>{
     api(d?.apiKey)?.pageList(param).then((resp: any) =>{
-      setData(resp["result"]?.records?.map((r: any) => {
-        return { key: r.id, ...r }
-      }))
-      setPagination({ total: resp.result.total, defaultCurrent: resp.result.current, pageSize: 10 })
+      if(resp["result"]){
+        setData(resp["result"]?.records?.map((r: any) => {
+          return { key: r.id, ...r }
+        }))
+        setPagination({ total: resp.result.total, defaultCurrent: resp.result.current, pageSize: 10 })
+      }
     }).catch(resp => {
 
     })

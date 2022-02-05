@@ -5,7 +5,7 @@ import TabMenu from './TabMenu';
 import { useStorage } from '@/redux'
 import style from './module/TabPanes.module.less'
 import { SyncOutlined } from '@ant-design/icons'
-import { StaticMenu } from '../store/menu';
+import { StaticMenu } from '../config/menu';
 import Components from "@/page";
 import { at } from '@/utils/toolkit'
 import getComponent from '@/components';
@@ -75,6 +75,9 @@ const TabPanes: FC<Props> = (props: any) => {
       setIsReload(false)
     }, 1000)
   }
+  const setListenerKey =(apiKey: string) => {
+    props.setListenerKey(apiKey)
+  }
   return (<div>
     <Tabs activeKey={activeKey} defaultActiveKey={defaultActiveKey}
       className={style.tabs}
@@ -103,7 +106,7 @@ const TabPanes: FC<Props> = (props: any) => {
               {!isReload && selectedKeys?.includes(pane.key) ? (
                 <div className={"content"} style={{ paddingTop: 10,minHeight:"88vh" }}>
                   <React.Suspense fallback={<div>loading...</div>}>
-                    <Component {...pane} />
+                    <Component {...pane} setListenerKey = {setListenerKey}/>
                   </React.Suspense>
                 </div>
               ) : (

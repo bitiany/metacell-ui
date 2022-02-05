@@ -2,14 +2,13 @@ import { MetaFormConfig } from '@/core/types'
 
 export const Layout:MetaFormConfig = {
   system: {
+    apiKey: "system",
     title: "",
     items:[
       {
         label: "系统名称",
         apiKey: "systemName",
         itemType: 1,
-        sortabled: false,
-        selected: true,
         required: true,
         helpText: "系统名称",
         extInfo: {
@@ -20,10 +19,8 @@ export const Layout:MetaFormConfig = {
       },
       {
         label: "系统编码",
-        apiKey: "systemCode",
+        apiKey: "id",
         itemType: 1,
-        sortabled: false,
-        selected: true,
         required: true,
         helpText: "系统编码",
         extInfo: {
@@ -33,32 +30,8 @@ export const Layout:MetaFormConfig = {
         },
       },
       {
-        label: "数据源",
-        apiKey: "datasourceId",
-        itemType: 1,
-        sortabled: false,
-        selected: true,
-        required: false,
-        helpText: "数据源",
-        control: {
-          component: "dropdown",
-          apiKey: "datasource",
-          format: (data:any) =>{
-            return {
-              code: data.id,
-              name: data.host + ":" + data.port + "/" + data.database
-            }
-          }
-        },
-        extInfo: {
-          suffix: "",
-          prefix: "",
-          maxLength: 10,
-        },
-      },
-      {
         label: "系统ICON",
-        apiKey: "logo",
+        apiKey: "systemIcon",
         itemType: 1,
         required: false,
         helpText: "系统ICON",
@@ -81,26 +54,27 @@ export const Layout:MetaFormConfig = {
         },
       },
       {
-        label: "状态",
-        apiKey: "status",
-        itemType: 5,
-        required: true,
+        label: "描述",
+        apiKey: "decription",
+        itemType: 1,
+        required: false,
+        helpText: "描述",
         extInfo: {
-          defaultChecked: true,
+          suffix: "",
+          prefix: "",
+          maxLength: 10,
         },
-      },
-      
+      }
     ]
   },
   datasource: {
+    apiKey: "datasource",
     title: "",
     items:[
       {
         label: "数据库类型",
         apiKey: "databaseType",
         itemType: 4,
-        sortabled: false,
-        selected: true,
         required: true,
         helpText: "数据库类型",
         extInfo: {},
@@ -116,8 +90,6 @@ export const Layout:MetaFormConfig = {
         label: "数据库名",
         apiKey: "database",
         itemType: 1,
-        sortabled: false,
-        selected: true,
         required: true,
         helpText: "数据库名",
         extInfo: {
@@ -130,8 +102,6 @@ export const Layout:MetaFormConfig = {
         label: "主机",
         apiKey: "host",
         itemType: 1,
-        sortabled: false,
-        selected: true,
         required: true,
         helpText: "主机",
         extInfo: {
@@ -177,5 +147,119 @@ export const Layout:MetaFormConfig = {
       },
       
     ]
-  }
+  },
+  application: {
+    apiKey: "application",
+    title: "",
+    items:[
+      {
+        label: "基本信息",
+        itemType: 0,
+      },
+      {
+        label: "应用编码",
+        apiKey: "id",
+        itemType: 1,
+        required: true,
+        helpText: "应用编码",
+        extInfo: {
+          suffix: "",
+          prefix: "",
+          maxLength: 32,
+        },
+      },
+      {
+        label: "应用名称",
+        apiKey: "appName",
+        itemType: 1,
+        required: true,
+        helpText: "应用名称",
+        extInfo: {
+          maxLength: 32,
+        }
+      },
+      {
+        label: "数据源",
+        apiKey: "datasourceId",
+        itemType: 4,
+        required: false,
+        helpText: "数据源",
+        control: {
+          component: "dropdown",
+          apiKey: "datasource",
+          format: (data:any) =>{
+            return {
+              code: data.id,
+              name: data.host + ":" + data.port + "/" + data.database
+            }
+          }
+        }
+      },
+      {
+        label: "描述",
+        apiKey: "decription",
+        itemType: 1,
+        required: false,
+        helpText: "描述",
+        extInfo: {
+          suffix: "",
+          prefix: "",
+          maxLength: 10,
+        },
+      },
+      {
+        label: "应用路由",
+        itemType: 0,
+      },
+      {
+        label: "路由",
+        apiKey: "uri",
+        required: false,
+        itemType: 1,
+        helpText: "数据源",
+      },
+      {
+        label: "路由断言",
+        apiKey: "predicates",
+        required: false,
+        itemType: 1,
+        helpText: "数据源",
+      },
+      
+    ]
+  },
+  module: {
+    apiKey: "module",
+    title: "",
+    items:[
+      {
+        label: "应用编码",
+        apiKey: "id",
+        itemType: 1,
+        required: true,
+        helpText: "应用编码",
+        extInfo: {
+          suffix: "",
+          prefix: "",
+          maxLength: 32,
+        },
+      },]
+    },
+  menu: {
+    apiKey: "menu",
+    items:[
+      {
+        label: "应用编码",
+        apiKey: "id",
+        itemType: 1,
+        required: true,
+        helpText: "应用编码",
+        extInfo: {
+          suffix: "",
+          prefix: "",
+          maxLength: 32,
+        }
+      }
+    ]
+  }  
 }

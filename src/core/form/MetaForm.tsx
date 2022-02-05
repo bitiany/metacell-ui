@@ -1,7 +1,7 @@
 import { useEffect, forwardRef } from "react";
 import { Form } from "antd";
 import MetaItemWrapper from './MetaItemWrapper'
-import { ItemType, MetaFormItemProps, MetaForm, MetaFormItem } from "@/core/types";
+import { ItemType, MetaForm, MetaFormItem } from "@/core/types";
 import MetaElements from './element';
 import getComponent from '@/components';
 import '@/assets/form.less'
@@ -19,13 +19,13 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
       form.setFieldsValue(data);
     }
   };
-  const itemWrapper = (item: MetaFormItemProps) => {
+  const itemWrapper = (item: MetaFormItem) => {
     const Component = getComponent({ name: item?.control?.component.toLowerCase(), 
       state: {...item, 
         apiKey: item?.control?.apiKey
       } }) 
     || MetaElements["Meta" + ItemType[item.itemType]]
-    return (<MetaItemWrapper
+    return item.itemType === 0?(<Component {...item}/>) :(<MetaItemWrapper
       component={Component}
       key={item.apiKey}
       setFieldValue={(value) => setFieldValue(value)}

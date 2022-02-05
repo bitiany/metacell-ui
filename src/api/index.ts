@@ -1,4 +1,4 @@
-import {getSystem, getDatasource, deleteDatasource, saveDatasource, listDatasource} from './aps'
+import {getSystem,saveSystem, getDatasource, deleteSystem,getSystemList, deleteDatasource, saveDatasource, listDatasource,getApplication,  listApplication, getApplcation, saveApplication, deleteApplication} from './aps'
 
  const api = (apiKey?: string)=>{
   if(apiKey === "datasource"){
@@ -6,21 +6,32 @@ import {getSystem, getDatasource, deleteDatasource, saveDatasource, listDatasour
       pageList: getDatasource,
       save: saveDatasource,
       delete: deleteDatasource,
-      list: listDatasource
+      list: listDatasource,
+      get: getApplication
     }
   }else if (apiKey === "system"){
     return {
       pageList: getSystem,
-      delete: deleteDatasource,
-      save: saveDatasource,
-      list: listDatasource
+      delete: deleteSystem,
+      save: saveSystem,
+      list: getSystemList,
+      get: getApplication
+    }
+  }else if (apiKey === "application"){
+    return {
+      pageList: getApplcation,
+      delete: deleteApplication,
+      save: saveApplication,
+      list: listApplication,
+      get: getApplication
     }
   }
   return {
     pageList: getSystem,
     delete: deleteDatasource,
     save: saveDatasource,
-    list: listDatasource
+    list: listDatasource,
+    get: getApplication
   }
 }
 export default api

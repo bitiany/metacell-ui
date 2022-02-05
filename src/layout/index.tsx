@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Layout, BackTop } from "antd";
 import { useStorage } from '@/redux'
-import { StaticMenu } from '@/store/menu'
+import { StaticMenu } from '@/config/menu'
 import classNames from 'classnames'
 import Asider from "./Asider";
 import Header from "./Header";
@@ -27,7 +27,8 @@ const MainLayout = (props: any) => {
   const [selectedKeys, setSelectedKeys] = useStorage("setSelectedKeys", "selectedKeys")
   const [userInfo, setUserInfo] = useStorage("setUserInfo")
   const para = queryParam(search) || {}
-  const listener = useEvent("showProvider", { apiKey: para["apiKey"] || "" })
+  const [apiKey] = useState<string>(para["apiKey"] || "")
+  const listener = useEvent("showProvider", { apiKey: apiKey })
 
   const setVisible = (visible:boolean) =>{
     setProvider({visible: visible})
@@ -40,10 +41,9 @@ const MainLayout = (props: any) => {
   }
 
   useEffect(() => {
+    // setApiKey(para["apiKey"] || "")
     if (pathRef.current === pathname + search) {
-      listener((data: any) => {
-        setProvider({visible: true, ...data})
-      })
+      
     }
     if (noNewTab.includes(pathname)) {
       return
@@ -68,9 +68,16 @@ const MainLayout = (props: any) => {
       }], "add")
     }
     pathRef.current = pathname + search
+    listener((data: any) => {
+      console.log(data)
+      setProvider({visible: true, ...data})
+    })
   })
 
-
+  const setListenerKey = useCallback((apiKey:string)=>{
+    console.log("set apikey", apiKey)
+    // setApiKey(apiKey)
+  }, [])
   return (
     <Layout className={styles.container} style={{ display: pathname.includes('/login') ? 'none' : 'flex' }}>
       <BackTop />
@@ -78,7 +85,7 @@ const MainLayout = (props: any) => {
       <Layout className={classNames(styles.content)}>
         <Header collapsed={collapsed} menuClick={menuClick} loginOut={loginOut} />
         <Layout.Content>
-          <TabPanes defaultActiveKey="dashboard" activeKey={selectedKeys ? selectedKeys[0] : null} {...props} />
+          <TabPanes defaultActiveKey="dashboard" activeKey={selectedKeys ? selectedKeys[0] : null} {...props} setListenerKey={setListenerKey}/>
           <AsyncProvider {...provider} setVisible={setVisible} />
         </Layout.Content>
       </Layout>

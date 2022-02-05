@@ -7,16 +7,21 @@ const { Option } = Select;
 const MetaDropdown = (props:any) => {
     const [options, setOptions] = useState([{ code: "", name: "" }]);
     const [initialState, setInitialState] = useState(false);
-
+    const [defaultValue, setDefaultValue] = useState<string>("")
     if (!initialState) {
       setInitialState(true);
-      api().list(props.apiKey).then((resp: any) => {
-        setOptions(resp.result?.map((r:any) => {
+      console.log(props.apiKey)
+      api(props.apiKey).list(props.apiKey).then((resp: any) => {
+        setOptions(resp.result?.map((r:any, index: number) => {
           if(props.control?.format){
-            return props.control?.format(r)
+            const op = props.control?.format(r, index)
+            if(op.default){
+              setDefaultValue(op.code)
+            }
+            return op
           }
           return r
-        }))
+        }))        
       })
     }
     const onChange = (value: any, obj: any) => {
@@ -27,11 +32,12 @@ const MetaDropdown = (props:any) => {
       data[props.apiKey] = value;
       props.setFieldValue(data, true);
     };
-
+    const {allowClear} = props
+    console.log(defaultValue, options)
     return (
-      <Select allowClear onChange={onChange}>
+      <Select allowClear={allowClear} onChange={onChange} style={{minWidth: "150px"}} defaultValue={"aps"}>
         {options && options?.map((option) => (
-          <Option key={option.code} value={option.name}>
+          <Option key={option.code} value={option.code}>
             {option.name}
           </Option>
         ))}

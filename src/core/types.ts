@@ -1,3 +1,9 @@
+export interface MetaControl {
+  title?:string;
+  component: string;
+  apiKey?: string;
+  format?: (data:any) =>void
+}
 export interface PickOption{
   name: string;
   code: string;
@@ -8,35 +14,35 @@ export interface MetaItem {
   label?: string;
   apiKey?: string;
   itemType: number;
-  sortabled?: boolean;
   extInfo?: any;
   pickOptions?: PickOption[],
-  selected?: boolean;
   helpText?: string;
-  component?:any;
-}
-
-export interface MetaFormItemProps extends MetaItem {
-  editabled?: boolean;
-  required?: boolean;
-  control?: any;
   defaultValue?: string;
-  data?:any;
-  setFieldValue?:(...data:any) =>void;
 }
 
-export interface MetaControl {
-  component: string;
-  apiKey?: string;
-  format?: (data:any) =>void
-}
+// 表单
+// export interface MetaFormItemProps extends MetaItem {
+//   editabled?: boolean;
+//   required?: boolean;
+//   control?: any;
+//   defaultValue?: string;
+//   data?:any;
+//   component?:any;
+//   setFieldValue?:(...data:any) =>void;
+// }
+
 
 export interface MetaFormItem extends MetaItem{
   required?: boolean;
+  component?:any;
   control?:MetaControl;
+  editabled?: boolean;
+  setFieldValue?:(...data:any) =>void;
+  data?:any;
 }
 
 export interface MetaForm {
+  apiKey: string;
   title?:string;
   data?: any;
   items?: MetaFormItem[];
@@ -45,10 +51,35 @@ export interface MetaForm {
 export interface MetaFormConfig {
   [key:string]: MetaForm;
 }
+//详情
+export interface MetaGroup{
+  title: string;
+  collapse?:boolean;
+  control?:MetaControl;
+  items?: MetaFormItem[];
+}
+
+export interface MetaPage {
+  apiKey: string;
+  items?: MetaFormItem[];
+  groups?: MetaGroup[];
+}
+
+
+
+export interface MetaPageConfig {
+  [key:string]: MetaPage;
+}
+
+// 表格
 
 export interface MetaTableItem extends MetaItem{
+  selected?: boolean;
+  sortabled?: boolean;
   filterabled?: boolean;
   primaryProperty?: boolean;
+  component?:any;
+  control?:MetaControl;
 }
 
 export type MetaTableProps = {
@@ -73,6 +104,7 @@ export interface MetaFilter extends MetaItem {
 }
 
 export const ItemType = {
+  0: "Collapse",
   1: "Input",
   2: "Number",
   3: "Date",

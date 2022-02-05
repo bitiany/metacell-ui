@@ -46,15 +46,16 @@ const MetaTable = (props: MetaTableProps) => {
       navigate(props.redirect, { state: { ...nav.record } })
     } else {
       const pane = panes?.filter((p: any) => p.key === item.apiKey)[0]
-      const path = pane ? pane.path : pathname + "/" + item.component + "?" + item.apiKey + "=" + nav.record[item.apiKey]
-      navigate(path, { state: { ...nav.record } })
+      const path = pane ? pane.path : pathname + "/" + item.control?.component + "?" + item.apiKey + "=" + nav.record[item.apiKey] + "&apiKey=" + item.control?.apiKey 
+      navigate(path, { state: { data: {...nav.record}, apiKey: item.control?.apiKey } })
       if (pane) {
         return
       }
       addTabPane([{
-        title: item.label,
+        data: {...nav.record}, apiKey: item.control?.apiKey,
+        title: item.control?.title,
         key: item.apiKey,
-        content: item.component,
+        content: item.control?.component,
         closabled: true,
         path: path
       }], "add")
