@@ -1,15 +1,17 @@
 import { EventEmitter } from 'events';
 export const bus = new EventEmitter();
 interface EventType {
+  action?:string;
   title?:string;
   apiKey: string;
   component?:string;
   data?: any;
   container?:string
 }
-
+export const clear = (type: string, state: EventType) => {
+  bus.removeAllListeners(type + "&" + state.apiKey)
+}
 export const useEvent = (type: string, state: EventType) => {
-
   if(state.data){
     return (listener?:(...args:any[])=>void) => {
       bus.emit(type + "&" + state.apiKey, state)

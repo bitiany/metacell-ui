@@ -37,6 +37,7 @@ export interface MetaFormItem extends MetaItem{
   component?:any;
   control?:MetaControl;
   editabled?: boolean;
+  hidden?: boolean;
   setFieldValue?:(...data:any) =>void;
   data?:any;
 }
@@ -83,7 +84,7 @@ export interface MetaTableItem extends MetaItem{
 }
 
 export type MetaTableProps = {
-  label:string;
+  label?:string;
   apiKey: string;
   title?:string;
   columns?: MetaTableItem[];

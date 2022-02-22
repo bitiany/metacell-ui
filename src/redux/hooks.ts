@@ -22,8 +22,8 @@ const UseRequestState = (type: string) => {
 
 export const useStorage = (type: string, option?: any) => {
   let state: any = { ...UseRequestState(type) }
-  const dispatch = UserDispatchCreator(type, state);
   let ns = namespace(type)
   const data = state[ns];
+  const dispatch = UserDispatchCreator(type, data);
   return [option ? data[option] : data, dispatch]
 }

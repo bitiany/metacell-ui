@@ -21,6 +21,7 @@ const ModalProvider = (props: ModalProps) => {
   const handleCancel = () => {
     props.setVisible(false);
   };
+
   const {apiKey, component} = props;
   const Component = getComponent({name: component, state: {}})
   return (
@@ -34,7 +35,7 @@ const ModalProvider = (props: ModalProps) => {
         {
           Component ? (
             <React.Suspense fallback={null}>
-              <Component apiKey={apiKey} refs= {modalRef}></Component>
+              <Component apiKey={apiKey} refs= {modalRef} data={props.data}></Component>
             </React.Suspense>
           ) :null 
         }

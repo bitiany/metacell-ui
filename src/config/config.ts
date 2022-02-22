@@ -186,6 +186,98 @@ export const TableConfig:TableConfigType = {
       }
     ]
   },
+  resource: {
+    // "label": "数据源",
+    "apiKey": "datasource",
+    // "preference": true,
+    "columns": [
+      {
+        "label": "资源编号",
+        "apiKey": "resourceCode",
+        "itemType": 1,
+        "filterabled": true,
+        "sortabled": false,
+        "primaryProperty": true,
+        "selected": true,
+        "component": "detail"
+      },
+      {
+        "label": "资源名称",
+        "apiKey": "resourceName",
+        "itemType": 1,
+        "filterabled": true,
+        "sortabled": false,
+        "selected": true
+      },
+      {
+        "label": "状态",
+        "apiKey": "status",
+        "itemType": 5,
+        "filterabled": false,
+        "sortabled": false,
+        "selected": true,
+      },
+      {
+        "label": "描述",
+        "apiKey": "description",
+        "itemType": 1,
+        "filterabled": false,
+        "sortabled": false
+      }
+    ],
+    operation: [
+      {
+        name:"删除",
+        type: "delete"
+      }
+    ]
+  },
+  organization: {
+    // "label": "数据源",
+    "apiKey": "datasource",
+    // "preference": true,
+    "columns": [
+      {
+        "label": "资源编号",
+        "apiKey": "resourceCode",
+        "itemType": 1,
+        "filterabled": true,
+        "sortabled": false,
+        "primaryProperty": true,
+        "selected": true,
+        "component": "detail"
+      },
+      {
+        "label": "资源名称",
+        "apiKey": "resourceName",
+        "itemType": 1,
+        "filterabled": true,
+        "sortabled": false,
+        "selected": true
+      },
+      {
+        "label": "状态",
+        "apiKey": "status",
+        "itemType": 5,
+        "filterabled": false,
+        "sortabled": false,
+        "selected": true,
+      },
+      {
+        "label": "描述",
+        "apiKey": "description",
+        "itemType": 1,
+        "filterabled": false,
+        "sortabled": false
+      }
+    ],
+    operation: [
+      {
+        name:"删除",
+        type: "delete"
+      }
+    ]
+  },
 }
 export default {
   basename: '/',

@@ -3,28 +3,34 @@ import { Collapse, Space, Row, Col } from 'antd';
 import { MetaLabel } from '@/core/form/MetaLabel';
 import { MetaFormItem, MetaGroup } from '@/core/types';
 import getComponent from '@/components';
+import AsyncProvider from '@/core/provider'
 import api from '@/api';
 import { Page } from '@/config/page'
+import { useEvent, clear } from '@/utils/hooks'
 import '@/assets/page.less'
 import '@/assets/form.less'
 const { Panel } = Collapse;
 const Application = (props: any) => {
   const [data, setData] = useState<any>({})
   const [page, setPage] = useState<any>({})
-  const {apiKey, setListenerKey} = props
+  const [provider, setProvider] = useState<any>({ visible: false, data: {} })
+  const { apiKey } = props
+  const id = props.data?.id
+
+  const listener = useEvent("showProvider", { apiKey: "module" })
   useEffect(() => {
-    if(setListenerKey){
-      setListenerKey("module")
-    }
     setPage(Page[apiKey])
-    api(apiKey).get(props.data?.id).then((resp:any) => {
-      setPage(Page[apiKey])
+    api(apiKey).get(id).then((resp: any) => {
       setData(resp.result)
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
     })
-  },[])
-
+    listener((data: any) => {
+      setProvider({ visible: true, ...data })
+    })
+    return () => { clear("showProvider", { apiKey: "module" }) }
+    // eslint-disable-next-line
+  }, [])
   const renderRowCol = (items: MetaFormItem[], index: number) => {
     return (
       <Row key={index}>
@@ -40,8 +46,7 @@ const Application = (props: any) => {
             )
           })
         }
-      </Row>
-    )
+      </Row>)
   }
   const renderCollapse = (groups?: MetaGroup[]) => {
     if (page.groups && page.groups.length > 0) {
@@ -50,7 +55,7 @@ const Application = (props: any) => {
           return (<div className='collapse-icon'><Space /></div>)
         }}>
           {
-            page.groups.map((group: MetaGroup, index:number) => {
+            page.groups.map((group: MetaGroup, index: number) => {
               const rows: any = []
               if (group.items) {
                 while (group.items.length > 0) {
@@ -64,7 +69,7 @@ const Application = (props: any) => {
                 return <Panel header={group.title} key={index}>
                   {
                     Component ? <React.Suspense fallback={null}>
-                      <Component apiKey={group.control.apiKey} data={data.modules}></Component>
+                      <Component apiKey={group.control.apiKey} data={{ appId: id, modules: data.modules }}></Component>
                     </React.Suspense> : null
                   }
                 </Panel>
@@ -86,8 +91,15 @@ const Application = (props: any) => {
     }
     return (<div></div>)
   }
+
+  const setVisible = (visible: boolean) => {
+    console.log(id)
+    setProvider({ visible: visible, appId: id })
+  }
+
   return (<div style={{ width: "100%" }}>
     {renderCollapse(page.groups)}
+    <AsyncProvider {...provider} setVisible={setVisible} />
   </div>)
 }
 

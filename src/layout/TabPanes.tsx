@@ -1,32 +1,60 @@
-import React, { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { FC,useRef, useState, useEffect, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Tabs, Dropdown, Alert, Spin } from 'antd'
-import TabMenu from './TabMenu';
-import { useStorage } from '@/redux'
-import style from './module/TabPanes.module.less'
 import { SyncOutlined } from '@ant-design/icons'
-import { StaticMenu } from '../config/menu';
+import { useStorage } from '@/redux'
+import TabMenu from './TabMenu';
 import Components from "@/page";
-import { at } from '@/utils/toolkit'
+import { at,queryParam } from '@/utils/toolkit'
 import getComponent from '@/components';
-const { TabPane } = Tabs;
-
-const menu = StaticMenu.Menus;
+import style from './module/TabPanes.module.less'
 interface Props {
   defaultActiveKey?: string;
   panes?: any;
   activeKey?: string
 }
+const uri_parse = (url: string) => {
+  return url?.split('?')[0]
+}
+const { TabPane } = Tabs;
 
 const TabPanes: FC<Props> = (props: any) => {
   const {
     activeKey,
     defaultActiveKey,
   } = props
+  const pathRef: any = useRef<string>('')
+  const { pathname, search } = useLocation()
   const navigate = useNavigate();
   const [isReload, setIsReload] = useState<boolean>(false)
   const [panes, addTabPane] = useStorage("addTabPane", "panes")
+  const [menus] = useStorage("setMenus")
   const [selectedKeys, setSelectedKeys] = useStorage("setSelectedKeys", "selectedKeys")
+  const para:any = useMemo(() => {
+    return queryParam(search) || {}
+  }, [search])
+  const {apiKey} = para
+
+  const pane = panes?.filter((p: any) => (uri_parse(p.path) === pathname && (!apiKey || apiKey === p.key)))[0]
+  let item = at.find(menus, (m: any) => (uri_parse(m.path) === pathname && (!apiKey || apiKey === m.apiKey)), "children")
+  useEffect(() => {
+    if (pane) {
+      if (pathRef.current !== pathname + search) {
+        setSelectedKeys([pane.key])
+      }
+    } else {
+      if (!item || selectedKeys?.includes(item.apiKey)) { return }
+      addTabPane([{
+        title: item.name,
+        key: item.apiKey,
+        content: item.component,
+        closabled: true,
+        path: item.path
+      }], "add")
+    }
+    pathRef.current = pathname + search
+  })
+
   const onEdit = (targetKey: any, action: any) => {
     switch (action) {
       case 'remove':
@@ -59,7 +87,7 @@ const TabPanes: FC<Props> = (props: any) => {
   const onTabClick = (targetKey: any) => {
     const pane = panes.filter((p: any) => p.key === targetKey)[0]
     if (pane) {
-      const [parent, item] = at.findParent(menu, (m: any) => m.apiKey === targetKey, "children")
+      const [parent, item] = at.findParent(menus, (m: any) => m.apiKey === targetKey, "children")
       navigate(pane.path)
       setSelectedKeys(item ? [item.apiKey, parent.apiKey] : [pane.key])
     }
@@ -75,9 +103,7 @@ const TabPanes: FC<Props> = (props: any) => {
       setIsReload(false)
     }, 1000)
   }
-  const setListenerKey =(apiKey: string) => {
-    props.setListenerKey(apiKey)
-  }
+
   return (<div>
     <Tabs activeKey={activeKey} defaultActiveKey={defaultActiveKey}
       className={style.tabs}
@@ -89,7 +115,7 @@ const TabPanes: FC<Props> = (props: any) => {
         panes?.map((pane: any) => {
           const tabMenu = TabMenu({ ...props, pane: pane, onEdit, refreshTab })
           let Component = pane.content && Components[pane.content]
-          Component = Component || getComponent({ name: pane.content.toLowerCase(), state: {} })
+          Component = Component || getComponent({ name: pane.content?.toLowerCase(), state: {} })
           return Component && (
             <TabPane tab={
               <Dropdown overlay={tabMenu} placement="bottomLeft" trigger={['contextMenu']}>
@@ -106,7 +132,7 @@ const TabPanes: FC<Props> = (props: any) => {
               {!isReload && selectedKeys?.includes(pane.key) ? (
                 <div className={"content"} style={{ paddingTop: 10,minHeight:"88vh" }}>
                   <React.Suspense fallback={<div>loading...</div>}>
-                    <Component {...pane} setListenerKey = {setListenerKey}/>
+                    <Component {...pane}/>
                   </React.Suspense>
                 </div>
               ) : (

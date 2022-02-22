@@ -11,7 +11,7 @@ export type PaneType = {
 
 export interface IMenu {
   apiKey: string;
-  label?: string;
+  name?: string;
   icon?: string;
   path?: string;
   component?: string;

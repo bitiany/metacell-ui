@@ -1,57 +1,47 @@
-import {  FC } from 'react'
+import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button, message, List } from 'antd'
 import ReactCanvasNest from 'react-canvas-nest'
 import './login.less'
 import Logo from '@/assets/img/logo.png'
 import { hash } from '@/utils/toolkit'
 import { useStorage } from '@/redux'
-interface Props {}
+import { doLogin } from '@/api/uac'
+interface Props { }
 
 const LoginForm: FC<Props> = () => {
   const history = useNavigate()
   const [userInfo, setUserInfo] = useStorage("setUserInfo")
+  const [tenant, setTenant] = useStorage("setTenant")
+  const [selectTenant, setSelectTenant] = useState<any[]>([])
 
-  // 触发登录方法
   const onFinish = (values: any): void => {
     const { userName, password } = values
     const pwd = hash.aes(password, userName)
-    if (userName !== 'admin' || pwd !== 'vS%2BVWLkP4BcmaUGtvdL87g==') {
-      message.error('用户名或密码错误')
-      return
-    }
-
-    // 登录后返回的数据，包括权限
-    const res = {
-      userName,
-      token: 'asdfghjkl',
-      permission: [
-        {
-          code: 'user:list:view',
-          name: '查看用户列表'
-        },
-        {
-          code: 'user:list:add',
-          name: '新增用户列表'
-        },
-        {
-          code: 'user:list:edit',
-          name: '编辑用户列表'
-        },
-        {
-          code: 'role:list:view',
-          name: '查看角色列表'
-        },
-        {
-          code: 'auth:test:view',
-          name: '查看权限测试页'
+    doLogin({
+      username: userName, password: pwd
+    }).then((resp: any) => {
+      if (resp.code === 401) {
+        message.error(resp.message)
+        setUserInfo({ userName: null, token: null, permission: [] })
+        console.log(userInfo)
+      } else {
+        const tenants = resp.result?.tenants
+        const user = resp.result;
+        delete user.tenants;
+        setUserInfo(user)
+        setSelectTenant(tenants)
+        if (tenant && tenant.length >= 2) {
+          history('/')
         }
-      ]
-    }
-    setUserInfo(res)
-    console.debug("===>",userInfo)
-    history('/')
+      }
+
+    }).catch(err => {
+      console.log(err)
+      message.error('用户名或密码不正确')
+      setUserInfo({ userName: null, accessToken: null, permission: [] })
+    })
   }
 
   const FormView = (
@@ -62,7 +52,7 @@ const LoginForm: FC<Props> = () => {
       >
         <Input placeholder="用户名" prefix={<UserOutlined />} size="large" />
       </Form.Item>
-      <Form.Item 
+      <Form.Item
         name="password"
         rules={[{ required: true, message: '请输入密码' }]}
         extra="用户名：admin 密码：123456"
@@ -85,6 +75,29 @@ const LoginForm: FC<Props> = () => {
       </Form.Item>
     </Form>
   )
+  const changeTenant = (tenantInfo: any) => {
+    const system = tenantInfo.systems? tenantInfo.systems[0] : null;
+    setTenant({...tenantInfo, currentSystem: system?.systemId})
+    history('/')
+  }
+  const ListView = (tenant: any[]) => {
+    return (
+      <Form className="login-form" name="login-form">
+        <List
+          itemLayout="horizontal"
+          dataSource={tenant}
+          renderItem={item => (
+            <List.Item>
+              <List.Item.Meta
+                title={<a onClick={() => changeTenant(item)} >{item.tenantName}</a>}
+              />
+            </List.Item>
+          )}
+        />
+      </Form>
+    )
+  }
+
   const floatColor = '110,65,255'
   // const floatColor = theme === 'default' ? '24,144,255' : '110,65,255'
   return (
@@ -101,7 +114,7 @@ const LoginForm: FC<Props> = () => {
         <img alt="" className="logo" src={Logo} />
         <span className="logo-name">Meta-Cell</span>
       </div>
-      {FormView}
+      {selectTenant && selectTenant.length > 0 ? ListView(selectTenant) : FormView}
     </div>
   )
 }

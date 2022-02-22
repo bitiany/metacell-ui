@@ -5,7 +5,10 @@ class UserInfo {
   store(){
     return {
       userName: null,
-      token: null
+      accessToken: null,
+      userId: null,
+      passportId: null,
+      tenants: null
     }
   } 
 

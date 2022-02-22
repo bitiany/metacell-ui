@@ -31,28 +31,6 @@ export const deleteDatasource = (id:string) => {
   return del("/api/aps/v1/datasource/" + id)
 }
 
-export const listDatasource = (id:string) => {
+export const listDatasource = () => {
   return get("/api/aps/v1/datasource/list")
-}
-//应用管理
-export const getApplcation = (param?:any)=>{
-  return get("/api/aps/v1/application/pageList", param);
-}
-
-export const saveApplication = (data:any)=>{
-  return post("/api/aps/v1/application", data);
-}
-
-
-export const deleteApplication = (id:string) => {
-  return del("/api/aps/v1/application/" + id)
-}
-
-export const listApplication = (id:string) => {
-  return get("/api/aps/v1/application/list")
-}
-
-
-export const getApplication = (id:string) => {
-  return get("/api/aps/v1/application/" + id)
 }

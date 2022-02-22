@@ -1,6 +1,6 @@
 import axios , {AxiosRequestConfig, AxiosResponse} from 'axios'
 // import {AUTH_TOKEN, TENANT_ID} from './constants'
-
+import { message } from 'antd';
 axios.defaults.timeout = 10000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -15,7 +15,13 @@ axios.interceptors.request.use((config:AxiosRequestConfig) => {
 });
 
 axios.interceptors.response.use((res: AxiosResponse) => {
-  return res.data && res.data;
+  if(res.data.code === 200){
+    return res.data && res.data;
+  }else{
+    message.error(res.data.errorCode || res.data.message)
+  }
+}, (error :any) => {
+  message.error(error)
 });
 
 const request = (param:any) => {

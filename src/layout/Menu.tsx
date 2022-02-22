@@ -21,7 +21,7 @@ const renderMenuItem = (item: IMenu) => {
       icon={item.icon ? renderMenuItemIcon(item.icon) : null}
     >
       <Link to={item.path || item.apiKey} state={{ ...queryParam(item.path || "") }}>
-        {<span className="nav-text">{item.label}</span>}
+        {<span className="nav-text">{item.name}</span>}
       </Link>
     </Menu.Item>
   )
@@ -31,11 +31,11 @@ const renderSubMenu = (item: IMenu) => {
   return (
     <Menu.SubMenu
       key={item.apiKey}
-      title={item.label}
+      title={item.name}
       icon={item.icon ? renderMenuItemIcon(item.icon) : null}
     >
       {item.children?.map((child) => {
-        return child.children ? renderSubMenu(child) : renderMenuItem(child)
+        return child.children && child.children.length > 0 ? renderSubMenu(child) : renderMenuItem(child)
       }
       )}
     </Menu.SubMenu>
@@ -44,7 +44,8 @@ const renderSubMenu = (item: IMenu) => {
 
 const MenuComp = (props: MenuProps) => {
   const [selectedKeys] = useStorage("setSelectedKeys", "selectedKeys")
-  const menus = JSON.parse(JSON.stringify(props.menus))
+  const {menus} = props
+
   return (
     <Menu
       mode='inline'
@@ -53,7 +54,7 @@ const MenuComp = (props: MenuProps) => {
       selectedKeys={selectedKeys}
       style={{ borderRight: 0 }}
     >
-      {menus!.map((item: any) => {
+      {menus?.map((item: any) => {
         item.children = item.children?.filter((it:any) => !it.hidden).sort((l:any, r:any) => {
           if (l.sort && r.sort) {
             return l.sort - r.sort

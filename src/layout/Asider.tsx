@@ -1,14 +1,27 @@
+import {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { Layout } from 'antd'
 import { GithubOutlined } from "@ant-design/icons";
 import Menu from './Menu';
 import { useStorage } from '@/redux'
+import { getMenuTree } from '@/api/menu';
 import styles from './module/Home.module.less'
 const { Sider } = Layout
 
 const AppAsider = (props: any) => {
-  let { menuToggle, menu } = props
+  let { menuToggle } = props
   const [state] = useStorage("changeTheme")
+  // eslint-disable-next-line
+  const [menus, setMenus] = useStorage("setMenus")
+  const [tenant] = useStorage("setTenant")
+  const {currentSystem} = tenant
+  useEffect(() => {
+    getMenuTree({ systemId: currentSystem }).then((resp: any) => {
+      setMenus(resp.result)
+    })
+  // eslint-disable-next-line
+  }, [currentSystem])
+
   return (
     <Sider collapsed={menuToggle} className={styles.aside}
       width={220}>
@@ -19,7 +32,7 @@ const AppAsider = (props: any) => {
         </Link>
       </div>
       <div style={{ marginBottom: "20px" }} />
-      <Menu menus={menu} theme={state.theme}/>
+      <Menu menus={menus} theme={state.theme}/>
     </Sider>
   );
 }

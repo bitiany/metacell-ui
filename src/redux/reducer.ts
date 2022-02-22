@@ -4,7 +4,9 @@ import initialState from './store';
 export default (state = initialState, action: any) => {
   switch (action.type) {
     case RECEIVE_DATA:
-      return { ...state, ...action.data };
+      const newState = {...state}
+      newState[action.namespace] = action.data
+      return newState;
     default:
       return state;
   }

@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const resolve = dir => path.resolve(__dirname, dir);
 const packageName = require(path.join(process.cwd(), 'package.json')).name;
 const SRC_PATH = path.join(process.cwd(), 'src');
-
+// const CracoAlias = require("craco-alias");
 const CracoLessPlugin = require('craco-less');
 const CracoAntDesignPlugin = require('craco-antd');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
@@ -29,6 +29,13 @@ module.exports = {
     }
   },
   webpack: {
+    configure: (config, { env, paths }) => {
+      config.module.rules.push({
+        test: /\.svg$/,
+        use: ["@svgr/webpack"]
+      });
+      return config;
+    },
     // 设置别名
     alias: {
       '@': resolve("src"),
@@ -69,6 +76,13 @@ module.exports = {
     ]
   },
   plugins: [{
+    //   plugin: CracoAlias,
+    //   options: {
+    //     baseUrl: "./src",
+    //     tsConfigPath: "./tsconfig.extend.json",
+    //     source: "tsconfig"
+    //   }
+    // }, {
       plugin: CracoLessPlugin,
       options: {
         lessLoaderOptions: {

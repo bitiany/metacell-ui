@@ -7,15 +7,18 @@ import MainLayout from "@/layout";
 import LoginPage from '@/page/login'
 import ErrorPage from "./page/errorPage";
 import config from "./config/config";
-
 import theme from "@/theme.less";
 import "./App.less";
 
 import AppInfo from '@/store/AppInfo'
 import UserInfo from '@/store/UserInfo'
+import Tenant from '@/store/Tenant'
+import MenuStore from '@/store/Menu'
 
 Register(AppInfo)
 Register(UserInfo)
+Register(Tenant)
+Register(MenuStore)
 
 ConfigProvider.config({
   prefixCls: theme.antPrefix,
