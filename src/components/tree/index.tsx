@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Tree, Tooltip, Popconfirm, Result, message } from 'antd'
 import { PlusOutlined, PlusCircleOutlined, MinusCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { useEvent} from '@/utils/hooks'
-import { useStorage } from '@/redux'
+import { useRequest } from '@/utils/requests';
 import api from "@/api";
 const TreeNode = (props: any) => {
+  const request = useRequest()
   const { treeNode, apiKey, showProvider } = props;
   const onConfirm = (id: string) => {
-    api(apiKey).delete(id).then((resp: any) => {
+    request(api(apiKey).delete(id)).then((resp: any) => {
       if (resp && resp.success) {
         props.emit && props.emit()
         message.success('删除成功');
@@ -45,22 +46,24 @@ interface MetaTreeProps {
   apiKey: string;
   emit:(type?:string, data?:any) => void;
   param?:any;
+  height?: number;
 }
 
 const MetaTree = (props: MetaTreeProps) => {
-  const { data, apiKey, emit, param } = props;
+  const { data, apiKey, emit, param, height } = props;
   const [nodeTreeItem, setNodeTreeItem] = useState<any>({})
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
-  const [tenant] = useStorage("setTenant")
-  const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: apiKey, data: {...param, parentId: nodeTreeItem.id, tenantId: tenant.tenantId }, component: "form" })
+
+  const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: apiKey, data: {...param, parentId: nodeTreeItem.id }, component: "form" })
   const onSelect = (selectedKeys: React.Key[], info: any) => {
     setSelectedKeys(selectedKeys.map(key => key.toString()))
-    emit("", { ...info.node, menuName: info.node.name, menuCode: info.node.apiKey })
+    setNodeTreeItem({})
+    emit("selected", { ...info.node, menuName: info.node.name, menuCode: info.node.apiKey })
   };
   const onRightClick = (info: any) => {
     const {event, node} = info
     var x = event.currentTarget.offsetLeft + event.currentTarget.clientWidth;
-    var y = event.currentTarget.offsetTop + 40;
+    var y = event.currentTarget.offsetTop +(height ||80);
     setNodeTreeItem({
       pageX: x,
       pageY: y,

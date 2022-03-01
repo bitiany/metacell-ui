@@ -6,19 +6,18 @@ import { Provider, Register } from "./redux";
 import MainLayout from "@/layout";
 import LoginPage from '@/page/login'
 import ErrorPage from "./page/errorPage";
-import config from "./config/config";
 import theme from "@/theme.less";
 import "./App.less";
 
 import AppInfo from '@/store/AppInfo'
 import UserInfo from '@/store/UserInfo'
-import Tenant from '@/store/Tenant'
 import MenuStore from '@/store/Menu'
+import System from '@/store/System'
 
 Register(AppInfo)
 Register(UserInfo)
-Register(Tenant)
 Register(MenuStore)
+Register(System)
 
 ConfigProvider.config({
   prefixCls: theme.antPrefix,
@@ -29,7 +28,7 @@ const App: FC = (props: any) => {
     <ConfigProvider locale={zhCN} prefixCls={theme.antPrefix}>
       <div className="App">
         <Provider>
-          <Router basename={config.basename}>
+          <Router basename={"/"}>
             <Routes>
               <Route
                 path="*"

@@ -12,15 +12,14 @@ import * as Icons from "@ant-design/icons";
 import {ReactComponent as UserInfo} from '@/assets/img/user.svg'
 import { useStorage } from '@/redux'
 import style from './module/Header.module.less'
-
 const { Header } = Layout;
 
 const AppHeader = (props: any) => {
-  let { loginOut } = props;
+  let { loginOut, systems } = props;
   const navigate = useNavigate();
   const [panes, addTabPane] = useStorage("addTabPane", "panes")
-  const [tenant, setTenant] = useStorage("setTenant")
-  const { systems } = tenant
+  const [system, setSystem] = useStorage("setSystem")
+
   const menu = (
     <Menu>
       <Menu.ItemGroup title="用户设置">
@@ -41,13 +40,15 @@ const AppHeader = (props: any) => {
   const changeSystem = (sys: any) => {
     panes.length = 0
     addTabPane([], "clear")
-    setTenant({ ...tenant, currentSystem: sys.systemId })
+    setSystem({systemId: sys.systemId})
+    console.log("change system", system)
     navigate("/")
   }
   const renderMenuItemIcon = (sys:any) => {
     const Icon = Icons[sys.icon];
     return <Icon key={sys.systemId} onClick={() => changeSystem(sys)}/>;
   };
+
   return (
     <Header className={style.header}>
       <div className="toggleMenu">

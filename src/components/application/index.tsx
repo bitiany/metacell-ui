@@ -7,6 +7,7 @@ import AsyncProvider from '@/core/provider'
 import api from '@/api';
 import { Page } from '@/config/page'
 import { useEvent, clear } from '@/utils/hooks'
+import { useRequest } from '@/utils/requests';
 import '@/assets/page.less'
 import '@/assets/form.less'
 const { Panel } = Collapse;
@@ -16,13 +17,13 @@ const Application = (props: any) => {
   const [provider, setProvider] = useState<any>({ visible: false, data: {} })
   const { apiKey } = props
   const id = props.data?.id
-
+  const request = useRequest()
   const listener = useEvent("showProvider", { apiKey: "module" })
   useEffect(() => {
     setPage(Page[apiKey])
-    api(apiKey).get(id).then((resp: any) => {
+    request(api(apiKey).get(id)).then((resp: any) => {
       setData(resp.result)
-    }).catch(err => {
+    }).catch((err:any) => {
       console.log(err)
     })
     listener((data: any) => {

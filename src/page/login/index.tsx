@@ -1,45 +1,63 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Form, Input, Button, message, List } from 'antd'
+import { Form, Input, Button, List } from 'antd'
 import ReactCanvasNest from 'react-canvas-nest'
+import Base64 from 'base-64';
 import './login.less'
 import Logo from '@/assets/img/logo.png'
 import { hash } from '@/utils/toolkit'
 import { useStorage } from '@/redux'
+import { useRequest } from '@/utils/requests'
 import { doLogin } from '@/api/uac'
+import { getSysConfigMapByHost } from '@/api/system'
 interface Props { }
 
 const LoginForm: FC<Props> = () => {
   const history = useNavigate()
   const [userInfo, setUserInfo] = useStorage("setUserInfo")
-  const [tenant, setTenant] = useStorage("setTenant")
-  const [selectTenant, setSelectTenant] = useState<any[]>([])
+  const [tenant, selectTenant] = useStorage("selectTenant")
+  const [system, setSystem] = useStorage("setSystem")
+  const [selectTenants, setSelectTenants] = useState<any[]>([])
+  const request = useRequest()
+  useEffect(() => {
+    if (userInfo.accessToken) {
+      history('/')
+      return;
+    }
+    const hostname = window.location.host.split(":")[0];
+    request(getSysConfigMapByHost(hostname)).then((resp: any) => {
+      setSystem(resp.result)
+    })
+    // eslint-disable-next-line
+  }, [])
 
   const onFinish = (values: any): void => {
     const { userName, password } = values
     const pwd = hash.aes(password, userName)
-    doLogin({
-      username: userName, password: pwd
-    }).then((resp: any) => {
+
+    const Authorization = "Basic " + Base64.encode(system.systemId + ":" + system.systemId)
+
+    request(doLogin({
+      username: userName, password: pwd,
+      grant_type: "password"
+    }, { Authorization })).then((resp: any) => {
       if (resp.code === 401) {
-        message.error(resp.message)
         setUserInfo({ userName: null, token: null, permission: [] })
-        console.log(userInfo)
       } else {
         const tenants = resp.result?.tenants
         const user = resp.result;
         delete user.tenants;
-        setUserInfo(user)
-        setSelectTenant(tenants)
-        if (tenant && tenant.length >= 2) {
+        setUserInfo({ accessToken: user.access_token, userId: user.userId, userName: user.userName, tokenType: user.token_type })
+        setSelectTenants(tenants)
+        if (selectTenants && selectTenants.length >= 2) {
+          console.log(userInfo)
           history('/')
         }
       }
 
-    }).catch(err => {
+    }).catch((err:any) => {
       console.log(err)
-      message.error('用户名或密码不正确')
       setUserInfo({ userName: null, accessToken: null, permission: [] })
     })
   }
@@ -76,8 +94,8 @@ const LoginForm: FC<Props> = () => {
     </Form>
   )
   const changeTenant = (tenantInfo: any) => {
-    const system = tenantInfo.systems? tenantInfo.systems[0] : null;
-    setTenant({...tenantInfo, currentSystem: system?.systemId})
+    selectTenant(tenantInfo.tenantId)
+    console.log("changeTenant:", tenant)
     history('/')
   }
   const ListView = (tenant: any[]) => {
@@ -114,7 +132,7 @@ const LoginForm: FC<Props> = () => {
         <img alt="" className="logo" src={Logo} />
         <span className="logo-name">Meta-Cell</span>
       </div>
-      {selectTenant && selectTenant.length > 0 ? ListView(selectTenant) : FormView}
+      {selectTenants && selectTenants.length > 0 ? ListView(selectTenants) : FormView}
     </div>
   )
 }

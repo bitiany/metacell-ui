@@ -2,7 +2,8 @@ import {getSystem,saveSystem, getDatasource, deleteSystem,getSystemList, deleteD
   listDatasource} from './aps'
   import {getApplication,  listApplication, getApplcation, saveApplication, deleteApplication, listResource, saveModule, deleteModule} from './application'
 import { saveMenu, deleteMenu } from './menu'
-import {saveOrg, deleteOrg} from './uac'
+import {saveOrg, deleteOrg, userPage} from './uac'
+import {getMetaPageList} from '@/api/metapage'
  const api = (apiKey?: string)=>{
   if(apiKey === "datasource"){
     return {
@@ -55,6 +56,22 @@ import {saveOrg, deleteOrg} from './uac'
   }else if (apiKey === "organization"){
     return {
       pageList: getApplcation,
+      delete: deleteOrg,
+      save: saveOrg,
+      list: listResource,
+      get: getApplication
+    }
+  }else if (apiKey === "user"){
+    return {
+      pageList: userPage,
+      delete: deleteOrg,
+      save: saveOrg,
+      list: listResource,
+      get: getApplication
+    }
+  }else if (apiKey === "metaPage"){
+    return {
+      pageList: getMetaPageList,
       delete: deleteOrg,
       save: saveOrg,
       list: listResource,

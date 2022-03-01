@@ -6,15 +6,16 @@ import MetaDropdown from '@/components/dropdown'
 import AsyncProvider from '@/core/provider'
 import { useEvent, clear } from '@/utils/hooks'
 import MenuTree from "./menuTree";
+import { useRequest } from '@/utils/requests';
 import api from "@/api";
 const Menu = (props: any) => {
-  const [tenant] = useStorage("setTenant")
   const [tree, setTree] = useState<any[]>([])
   const [provider, setProvider] = useState<any>({ visible: false, data: {} })
-  const [system, setSystem] = useState<any[]>()
-  const [sysId, setSysId] = useState<any[]>(tenant.currentSystem)
+  const [system] = useStorage("setSystem")
+  const [selectSystem, setSelectSystem] = useState<any[]>()
+  const [sysId, setSysId] = useState<any[]>(system.systemId)
   const listener = useEvent("showProvider", { apiKey: "menu" })
-
+  const request = useRequest()
   // eslint-disable-next-line
   const format = (data: any, index: number) => {
     return {
@@ -25,18 +26,18 @@ const Menu = (props: any) => {
   }
   useEffect(() => {
     const queryAppList = async () => {
-      const resp: any = api("system").list({})
+      const resp: any = request(api("system").list({}))
       return resp
     }
     queryAppList().then((resp: any) => {
       if (resp && resp.success) {
-        setSystem(resp.result?.map((r: any, index: number) => {
+        setSelectSystem(resp.result?.map((r: any, index: number) => {
           const op = format(r, index)
           return op
         }))
       }
     })
-  }, [sysId])
+  }, [sysId, request])
   useEffect(() => {
     const convertTreeNode = (result: any[], data: any) => {
       const node = { key: data.id, title: data.name, ...data, children: [] }
@@ -47,7 +48,7 @@ const Menu = (props: any) => {
       }
       result.push(node)
     }
-    !provider.visible && getMenuTree({ systemId: sysId }).then((resp: any) => {
+    !provider.visible && request(getMenuTree({ systemId: sysId })).then((resp: any) => {
       if (resp.success) {
         const treeData: any[] = []
         resp.result.forEach((el: any) => {
@@ -55,9 +56,9 @@ const Menu = (props: any) => {
         });
         setTree(treeData)
       }
-    }).catch(error => {
+    }).catch((error:any) => {
     })
-  }, [sysId, provider])
+  }, [sysId, provider, request])
 
   useEffect(() => {
     listener((data: any) => {
@@ -71,7 +72,8 @@ const Menu = (props: any) => {
       <div style={{ marginLeft: "50px" }}>
         <Row>
           <Col span={8}>
-            <MetaDropdown defaultSelected={sysId} apiKey={"system"} control={{ format: format }} setFieldValue={(data: any) => setSysId(data.system)} allowClear={false} loadData={true} data={system} />
+            <MetaDropdown defaultSelected={sysId} apiKey={"system"} control={{ format: format }}
+              setFieldValue={(data: any) => setSysId(data.system)} allowClear={false} loadData={true} data={selectSystem} />
           </Col>
         </Row>
       </div>

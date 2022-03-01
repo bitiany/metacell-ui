@@ -110,5 +110,6 @@ export const ItemType = {
   2: "Number",
   3: "Date",
   4: "Select",
-  5: "Switch"
+  5: "Switch",
+  10: "Reference"
 }

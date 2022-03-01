@@ -1,16 +1,20 @@
-import {post, get, del} from '@/utils/request'
-export const doLogin = (passport:any) =>{
-  return post("/api/uac/doLogin?username=" +passport.username  + "&password=" + passport.password);
+import {doPost, doGet, doDel} from '@/utils/requests'
+export const doLogin = (passport:any, headers?: any) =>{
+  return doGet("/api/uac/oauth/token", passport, headers);
 }
 
 export const orgTree = (param: any) => {
-  return get("/api/uac/v1/org/tree", {...param})
+  return doGet("/api/uac/v1/org/tree", {...param})
 }
 
 export const deleteOrg = (id: string) => {
-  return del("/api/uac/v1/org/" + id)
+  return doDel("/api/uac/v1/org/" + id)
 }
 
-export const saveOrg = (param: string) => {
-  return post("/api/uac/v1/org/", param)
+export const saveOrg = (param: any) => {
+  return doPost("/api/uac/v1/org/", param)
+}
+
+export const userPage = (param: any) => {
+  return doPost("/api/uac/v1/user", param)
 }

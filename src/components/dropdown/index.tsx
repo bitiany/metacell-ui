@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { Select } from "antd";
 import api from "@/api";
 import {toCamelCase} from '@/utils/toolkit'
-
+import { useRequest } from '@/utils/requests';
 const { Option } = Select;
 const MetaDropdown = (props:any) => {
     const [initialState, setInitialState] = useState(false);
     const [select,setSelect] = useState<any>()
-    
+    const request = useRequest()
     useEffect(()=> {
       const {apiKey, allowClear, width, loadData, param, control, data, defaultSelected} = props
       const onChange = (value: any, obj: any) => {
@@ -35,7 +35,7 @@ const MetaDropdown = (props:any) => {
       }else{
         if ((loadData || loadData === null)  && !initialState) {
           setInitialState(true);
-          api(apiKey).list(param).then((resp: any) => {
+          request(api(apiKey).list(param)).then((resp: any) => {
             let defaultValue = defaultSelected 
             const data = resp.result?.map((r:any, index: number) => {
               if(control?.format){
@@ -52,7 +52,7 @@ const MetaDropdown = (props:any) => {
         }
       }
       return () => {console.log()}
-    }, [props, initialState])
+    }, [props, initialState, request])
 
     return select || (<div></div>);
   }

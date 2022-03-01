@@ -22,3 +22,5 @@ declare module 'react-canvas-nest'
 declare module 'redux-persist/lib/storage'
 declare module '@/components/*'
 // declare module 'crypto-js/*'
+
+declare module 'jsoneditor-react';

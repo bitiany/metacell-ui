@@ -19,9 +19,11 @@ axios.interceptors.response.use((res: AxiosResponse) => {
     return res.data && res.data;
   }else{
     message.error(res.data.errorCode || res.data.message)
+    return {}
   }
 }, (error :any) => {
-  message.error(error)
+  message.error(error.response.data.message)
+  return error.response.data;
 });
 
 const request = (param:any) => {
@@ -59,6 +61,16 @@ export const del = (url:string, data?:any, config?:any) => {
   return request({
     url: url,
     method:"delete",
+    ...config,
+    params: {...data, t: new Date().getTime()}
+  })
+}
+
+
+export const put = (url:string, data?:any, config?:any) => {
+  return request({
+    url: url,
+    method:"put",
     ...config,
     params: {...data, t: new Date().getTime()}
   })

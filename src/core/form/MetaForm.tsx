@@ -1,14 +1,16 @@
 import { useEffect, forwardRef } from "react";
-import { Form, Input } from "antd";
+import { Form, Collapse, Space } from "antd";
 import MetaItemWrapper from './MetaItemWrapper'
-import { ItemType, MetaForm, MetaFormItem } from "@/core/types";
+import { ItemType, MetaPage,MetaGroup, MetaFormItem } from "@/core/types";
 import MetaElements from './element';
 import getComponent from '@/components';
+import '@/assets/page.less'
 import '@/assets/form.less'
-
+const { Panel } = Collapse;
 const MetaFormLayout = forwardRef((props: any, _ref: any) => {
   const [form] = Form.useForm();
   const {data} = props;
+  const layout: MetaPage = props.layout
   const onFinish = (values: any) => {
     console.log(values)
   };
@@ -25,10 +27,6 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
     }
   };
   const itemWrapper = (item: MetaFormItem) => {
-
-    if(item.hidden){
-        return (<Input hidden name={item.apiKey} key={item.apiKey} {...item.extInfo} value={"123"}></Input>)
-    }
     const Component = getComponent({ name: item?.control?.component.toLowerCase(), 
       state: {...item, 
         apiKey: item?.control?.apiKey
@@ -42,10 +40,30 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
       {...item}
     />)
   }
-  const layout: MetaForm = props.layout
+  const renderCollapse = (groups: MetaGroup[])=> {
+    return (
+      <Collapse defaultActiveKey={["0", "1"]} ghost destroyInactivePanel expandIcon={(props:any) => {
+        return (<div className="collapse-icon"><Space /></div>)
+      }}>
+       {
+          groups.map((group:MetaGroup, index:number) => {
+            const Component = group.control ? getComponent({ name: group.control?.component, state: {} }) : null
+            return (<Panel header={group.title} key={index}>
+                { Component ? <Component /> : renderItems(group.items) }
+            </Panel>)
+          })
+       }
+      </Collapse>
+    )
+  }
+
+  const renderItems = (items?:MetaFormItem[]) => {
+    return items?.map((item: MetaFormItem) => itemWrapper(item))
+  }
+
   return (<div style={{ padding: "0 10px" }}>
     <Form name="basic" onFinish={onFinish} form={form} validateTrigger={["onChange", "onBlur"]}>
-      {layout?.items?.map((item: MetaFormItem) => itemWrapper(item))}
+      {layout.groups ? renderCollapse(layout.groups || []) : renderItems(layout.items)}
     </Form>
   </div>)
 })

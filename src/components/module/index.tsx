@@ -3,6 +3,7 @@ import { List, Radio, Popconfirm, message } from 'antd';
 import { AppstoreAddOutlined, EditOutlined, MinusCircleOutlined } from '@ant-design/icons'
 import Table from '@/components/table';
 import { useEvent } from '@/utils/hooks'
+import { useRequest } from '@/utils/requests';
 import api from '@/api';
 const Module = (props: any) => {
 
@@ -10,6 +11,7 @@ const Module = (props: any) => {
   const addModule = () => {
     showProvider(() => { })
   }
+  const request = useRequest()
   const [loading] = useState(false)
   const loadMore =
     !loading ? (
@@ -27,7 +29,7 @@ const Module = (props: any) => {
     ) : null;
   const onDelete = (data: any) => {
     console.log("123", data)
-    api("module").delete(data.id).then((resp: any) => {
+    request(api("module").delete(data.id)).then((resp: any) => {
       if (resp.success) {
         message.success('删除成功');
       }

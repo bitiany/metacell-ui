@@ -8,13 +8,18 @@ class UserInfo {
       accessToken: null,
       userId: null,
       passportId: null,
-      tenants: null
+      tenants: null,
+      selectTenant: null
     }
   } 
 
   @Mapper()
   setUserInfo(state: any, userInfo:UserType){
     return {...userInfo}
+  }
+  @Mapper()
+  selectTenant(state: any, tenantId: number){
+    return {...state, tenantId}
   }
 }
 
