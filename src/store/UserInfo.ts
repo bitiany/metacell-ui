@@ -1,7 +1,7 @@
 import { Mapper, Autowire } from '@/redux'
 import { UserType } from './types'
 class UserInfo {
-  @Autowire
+  @Autowire("userInfo")
   store(){
     return {
       userName: null,

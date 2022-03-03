@@ -14,10 +14,14 @@ import UserInfo from '@/store/UserInfo'
 import MenuStore from '@/store/Menu'
 import System from '@/store/System'
 
-Register(AppInfo)
-Register(UserInfo)
-Register(MenuStore)
-Register(System)
+new AppInfo()
+new UserInfo()
+new MenuStore()
+new System()
+// Register(AppInfo)
+// Register(UserInfo)
+// Register(MenuStore)
+// Register(System)
 
 ConfigProvider.config({
   prefixCls: theme.antPrefix,

@@ -23,7 +23,7 @@ export const useRequest = () =>{
   const [userInfo] = useStorage("setUserInfo")
   const headers =useMemo(() => {
     return {
-      Tenant_id: userInfo.tenantId || null,
+      Tenant_id: userInfo.tenantId || 1000,
       Authorization: (userInfo.tokenType? (userInfo.tokenType +  " ") : "")  + userInfo.accessToken || ""
     }
   },[userInfo])

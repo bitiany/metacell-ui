@@ -21,11 +21,12 @@ let StoreContext: ContextType = {
 };
 
 
-export const Register = (apis: any) => {
-  if (initialState[apis.name]) {
+export const Register = (name: string,apis: any) => {
+  if (initialState[name]) {
+    console.log("registrer==>",name,":", apis)
     throw new Error("API name 不能重复");
   }
-  StoreContext.refClass[apis.name.slice(0,1).toLowerCase() + apis.name.slice(1)] = apis;
+  StoreContext.refClass[name] = apis;
 };
 
 export const injectStore = (namespace:string,state?: any) => {
@@ -45,7 +46,7 @@ export const getFunc = (name: string) => {
 };
 
 export const namespace = (type:string) => {
-  const name = StoreContext.funcs[type].refClass.constructor.name;
+  const name = StoreContext.funcs[type].refClass.name;
   const storeName = name.slice(0,1).toLowerCase() + name.slice(1)
   return storeName;
 }

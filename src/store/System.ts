@@ -1,7 +1,7 @@
 import { Mapper, Autowire } from '@/redux'
 
 class System {
-  @Autowire
+  @Autowire("system")
   store(){
     return {
       systemId: "",

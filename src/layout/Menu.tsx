@@ -54,7 +54,7 @@ const MenuComp = (props: MenuProps) => {
       selectedKeys={selectedKeys}
       style={{ borderRight: 0 }}
     >
-      {menus?.map((item: any) => {
+      {(menus && menus.length > 0) && menus?.map((item: any) => {
         item.children = item.children?.filter((it:any) => !it.hidden).sort((l:any, r:any) => {
           if (l.sort && r.sort) {
             return l.sort - r.sort

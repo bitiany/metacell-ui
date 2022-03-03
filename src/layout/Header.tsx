@@ -38,10 +38,10 @@ const AppHeader = (props: any) => {
     </Menu>
   );
   const changeSystem = (sys: any) => {
-    panes.length = 0
+    if(panes) panes.length = 0
     addTabPane([], "clear")
     setSystem({systemId: sys.systemId})
-    console.log("change system", system)
+    console.log("change system", system,sys)
     navigate("/")
   }
   const renderMenuItemIcon = (sys:any) => {

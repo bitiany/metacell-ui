@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const resolve = dir => path.resolve(__dirname, dir);
 const packageName = require(path.join(process.cwd(), 'package.json')).name;
 const SRC_PATH = path.join(process.cwd(), 'src');
-// const CracoAlias = require("craco-alias");
 const CracoLessPlugin = require('craco-less');
 const CracoAntDesignPlugin = require('craco-antd');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
@@ -15,15 +14,15 @@ const {
   BundleAnalyzerPlugin
 } = require("webpack-bundle-analyzer");
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const proxy = require('./proxy.ts')
+
 module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:9101',
+        target: 'http://metacell.extrasky.cn',
         changeOrigin: true,
         pathRewrite: {
-          "^/api": '/'
+          "^/api": '/api'
         }
       }
     }
@@ -76,13 +75,6 @@ module.exports = {
     ]
   },
   plugins: [{
-    //   plugin: CracoAlias,
-    //   options: {
-    //     baseUrl: "./src",
-    //     tsConfigPath: "./tsconfig.extend.json",
-    //     source: "tsconfig"
-    //   }
-    // }, {
       plugin: CracoLessPlugin,
       options: {
         lessLoaderOptions: {

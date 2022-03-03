@@ -1,4 +1,4 @@
-import { Mapper, Autowire } from '@/redux'
+import { Mapper, Autowire, Store } from '@/redux'
 import { PaneType } from './types';
 const initPane = [{
   title: '首页',
@@ -7,8 +7,10 @@ const initPane = [{
   closabled: false,
   path: '/'
 }]
+
+
 class AppInfo {
-  @Autowire
+  @Autowire("appInfo")
   state() {
     return {
       collapsed: false,

@@ -1,6 +1,6 @@
 import { Mapper, Autowire } from '@/redux'
 class MenuStore {
-  @Autowire
+  @Autowire("menu")
   store(){
     return []
   } 
