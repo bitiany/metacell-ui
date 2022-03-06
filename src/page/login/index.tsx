@@ -1,16 +1,16 @@
 import { FC, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Form, Input, Button, List } from 'antd'
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import ReactCanvasNest from 'react-canvas-nest'
 import Base64 from 'base-64';
-import './login.less'
-import Logo from '@/assets/img/logo.png'
 import { hash } from '@/utils/toolkit'
 import { useStorage } from '@/redux'
 import { useRequest } from '@/utils/requests'
 import { doLogin } from '@/api/uac'
 import { getSysConfigMapByHost } from '@/api/system'
+import Logo from '@/assets/img/logo.png'
+import './login.less'
 interface Props { }
 
 const LoginForm: FC<Props> = () => {

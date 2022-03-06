@@ -9,8 +9,8 @@ export const saveApplication = (data:any)=>{
 }
 
 
-export const deleteApplication = (id:string) => {
-  return doDel("/api/msc/v1/application/" + id)
+export const deleteApplication = (data:any) => {
+  return doDel("/api/msc/v1/application/" + data)
 }
 
 export const listApplication = () => {

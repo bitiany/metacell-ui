@@ -8,8 +8,8 @@ import api from '@/api';
 import { Page } from '@/config/page'
 import { useEvent, clear } from '@/utils/hooks'
 import { useRequest } from '@/utils/requests';
-import '@/assets/page.less'
 import '@/assets/form.less'
+import '@/assets/page.less'
 const { Panel } = Collapse;
 const Application = (props: any) => {
   const [data, setData] = useState<any>({})
@@ -94,7 +94,6 @@ const Application = (props: any) => {
   }
 
   const setVisible = (visible: boolean) => {
-    console.log(id)
     setProvider({ visible: visible, appId: id })
   }
 

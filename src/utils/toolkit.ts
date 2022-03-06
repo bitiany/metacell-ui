@@ -19,7 +19,14 @@ const queryParam = (query: string) => {
   return params
 }
 
+const evil = (fn:string) => {
+  const Fun = Function
+  const fun = new Fun("return " + fn)
+  return fun()
+}
+
 export {
+  evil,
   at,
   queryParam,
   hash,

@@ -5,8 +5,8 @@ import * as Icons from "@ant-design/icons";
 import Menu from './Menu';
 import { useStorage } from '@/redux'
 import { getMenuTree } from '@/api/menu';
-import styles from './module/Home.module.less'
 import { useRequest } from '@/utils/requests';
+import styles from './module/Home.module.less'
 const { Sider } = Layout
 
 const AppAsider = (props: any) => {

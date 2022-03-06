@@ -28,12 +28,13 @@ const Resource = (props: any) => {
       default: index === 0
     }
   }
-  return (<Row justify="space-between">
+  const {application, resource} = props.data || {}
+  return (<Row>
     <Col span={10}>
-      <Dropdown apiKey={"application"} control={{ format: format }} setFieldValue={setFieldValue} allowClear={false} width={"50px"} loadData={true}></Dropdown>
+      <Dropdown apiKey={"application"} data={{...application}} control={{apiKey: "application", format: format }}  setFieldValue={setFieldValue} allowClear={false} width={"50px"} loadData={true}></Dropdown>
     </Col>
-    <Col span={10}>
-      <Dropdown {...props} control={{ format: resFormat }} apiKey={"resource"} param={{ appId }} width={"50px"} loadData={loadData} setFieldValue={setResource}></Dropdown>
+    <Col span={10} style={{paddingLeft: "20px"}}>
+      <Dropdown {...props}  data={{...resource}} control={{apiKey: "resource", format: resFormat }} apiKey={"resource"} param={{ appId:appId }} width={"50px"} loadData={loadData} setFieldValue={setResource}></Dropdown>
     </Col>
   </Row>)
 }

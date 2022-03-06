@@ -40,6 +40,8 @@ export interface MetaFormItem extends MetaItem{
   hidden?: boolean;
   setFieldValue?:(...data:any) =>void;
   data?:any;
+  loadData?:boolean;
+  param?:any;
 }
 
 export interface MetaForm {

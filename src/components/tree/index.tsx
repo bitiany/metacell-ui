@@ -1,21 +1,11 @@
 import { useState } from 'react'
-import { Tree, Tooltip, Popconfirm, Result, message } from 'antd'
+import { Tree, Tooltip, Result } from 'antd'
 import { PlusOutlined, PlusCircleOutlined, MinusCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { useEvent} from '@/utils/hooks'
-import { useRequest } from '@/utils/requests';
-import api from "@/api";
+import Control from '@/components/control'
+const { Delete } = Control
 const TreeNode = (props: any) => {
-  const request = useRequest()
   const { treeNode, apiKey, showProvider } = props;
-  const onConfirm = (id: string) => {
-    request(api(apiKey).delete(id)).then((resp: any) => {
-      if (resp && resp.success) {
-        props.emit && props.emit()
-        message.success('删除成功');
-      }
-    })
-  }
-
   const { pageX, pageY } = treeNode;
   const tmpStyle: any = {
     position: 'absolute',
@@ -33,11 +23,7 @@ const TreeNode = (props: any) => {
       </Tooltip>
     </div>
     <div style={{ alignSelf: 'center', marginLeft: 10 }} >
-      <Tooltip placement="bottom" title="删除节点">
-        <Popconfirm title={"确认是否删除" + treeNode.name} onConfirm={() => { onConfirm(treeNode.id) }} onCancel={() => { }} okText="确定" cancelText="取消">
-          <MinusCircleOutlined />
-        </Popconfirm>
-      </Tooltip>
+      <Delete apiKey={apiKey} record={treeNode} emit={() => {}} content={<MinusCircleOutlined />} />
     </div>
   </div>)
 }
@@ -53,7 +39,6 @@ const MetaTree = (props: MetaTreeProps) => {
   const { data, apiKey, emit, param, height } = props;
   const [nodeTreeItem, setNodeTreeItem] = useState<any>({})
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
-
   const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: apiKey, data: {...param, parentId: nodeTreeItem.id }, component: "form" })
   const onSelect = (selectedKeys: React.Key[], info: any) => {
     setSelectedKeys(selectedKeys.map(key => key.toString()))

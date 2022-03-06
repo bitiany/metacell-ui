@@ -10,3 +10,7 @@ export const saveMenu = (data:any) => {
 export const deleteMenu = (id:String) => {
   return doDel("/api/msc/v1/menu/" + id);
 }
+
+export const getMenu = (id:string) => {
+  return doGet("/api/msc/v1/menu/" + id)
+}

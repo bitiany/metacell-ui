@@ -36,7 +36,8 @@ const Table = (props: any) => {
         setLayout((layoutConfig && JSON.stringify(layoutConfig) !== "{}") ? (layoutConfig.type === "json" ? JSON.parse(layoutConfig.config) : {}) : null)
       }
     })
-  }, [system, apiKey, request])
+    // eslint-disable-next-line
+  }, [system, apiKey])
 
   const seachPage = useCallback((param?: any) => {
     request(api(apiKey)?.pageList({ ...param, ...pagination, ...condition })).then((resp: any) => {
@@ -74,20 +75,13 @@ const Table = (props: any) => {
       }
       return res
     }
-    console.log(pagination, filters, buildFilter(filters))
     seachPage({
       ...pagination, ...buildFilter(filters)
     })
   }
   const onOperator = (type: string, data: any) => {
-    if (type === "delete") {
-      request(api(apiKey)?.delete(data.id)).then((resp: any) => {
-        seachPage({
-          ...pagination
-        })
-      }).catch((resp: any) => {
-
-      })
+    if (type === "Delete") {
+      return api(apiKey)?.delete(data.id)
     }
   }
   return (

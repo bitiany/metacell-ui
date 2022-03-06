@@ -1,4 +1,4 @@
-import { Mapper, Autowire, Store } from '@/redux'
+import { Mapper, Autowire } from '@/redux'
 import { PaneType } from './types';
 const initPane = [{
   title: '首页',

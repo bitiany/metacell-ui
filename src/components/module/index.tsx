@@ -28,7 +28,6 @@ const Module = (props: any) => {
       </div>
     ) : null;
   const onDelete = (data: any) => {
-    console.log("123", data)
     request(api("module").delete(data.id)).then((resp: any) => {
       if (resp.success) {
         message.success('删除成功');

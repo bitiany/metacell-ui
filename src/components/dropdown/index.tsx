@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
 import { Select } from "antd";
 import api from "@/api";
-import {toCamelCase} from '@/utils/toolkit'
+import {evil} from '@/utils/toolkit'
 import { useRequest } from '@/utils/requests';
 const { Option } = Select;
 const MetaDropdown = (props:any) => {
-    const [initialState, setInitialState] = useState(false);
     const [select,setSelect] = useState<any>()
     const request = useRequest()
+    const {allowClear, width, loadData, param, control, data} = props
     useEffect(()=> {
-      const {apiKey, allowClear, width, loadData, param, control, data, defaultSelected} = props
       const onChange = (value: any, obj: any) => {
-        let data = {
-          name: obj.children,
-          apiKey: toCamelCase(value),
-        };
+        let data = {};
         data[props.apiKey] = value;
         props.setFieldValue(data, true);
       };
-      
       const renderSelect =(options:any[], defaultValue?: any)=> {
+        if(defaultValue){
+          let data = {};
+          data[props.apiKey] = defaultValue;
+          props.setFieldValue(data, true);
+        }
         return (
           <Select allowClear={allowClear} onChange={onChange} style={{minWidth: width || "250px"}} defaultValue={defaultValue} placeholder={"请选择"}>
           {options && Array.isArray(options) && options?.map((option) => (
@@ -29,31 +29,25 @@ const MetaDropdown = (props:any) => {
           ))}
         </Select>
         )
-      }      
+      }  
       if(data && Array.isArray(data)){
         setSelect(renderSelect(data, data.filter((d:any) => d.default)[0].code))  
       }else{
-        if ((loadData || loadData === null)  && !initialState) {
-          setInitialState(true);
-          request(api(apiKey).list(param)).then((resp: any) => {
-            let defaultValue = defaultSelected 
+        if ((loadData || loadData === null)) {
+          setSelect(null)
+          let defaultValue = data.id 
+          const format =control?.format ? evil(control.format) : (data:any) => data;
+          request(api(control.apiKey).list(param)).then((resp: any) => {
             const data = resp.result?.map((r:any, index: number) => {
-              if(control?.format){
-                const op = control?.format(r, index)
-                if(!defaultValue && op.default){
-                  defaultValue =op.code
-                }
-                return op
-              }
-              return r
+              return format(r, index)
             })
-            setSelect(renderSelect(data, defaultValue)   )  
+            setSelect(renderSelect(data, defaultValue))  
           })   
         }
       }
       return () => {console.log()}
-    }, [props, initialState, request])
-
-    return select || (<div></div>);
+      // eslint-disable-next-line
+    }, [param])
+    return select || <div></div>;
   }
 export default MetaDropdown;

@@ -2,12 +2,11 @@ import { FC } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/lib/locale-provider/zh_CN";
-import { Provider, Register } from "./redux";
+import { Provider } from "./redux";
 import MainLayout from "@/layout";
 import LoginPage from '@/page/login'
 import ErrorPage from "./page/errorPage";
 import theme from "@/theme.less";
-import "./App.less";
 
 import AppInfo from '@/store/AppInfo'
 import UserInfo from '@/store/UserInfo'
@@ -18,10 +17,6 @@ new AppInfo()
 new UserInfo()
 new MenuStore()
 new System()
-// Register(AppInfo)
-// Register(UserInfo)
-// Register(MenuStore)
-// Register(System)
 
 ConfigProvider.config({
   prefixCls: theme.antPrefix,

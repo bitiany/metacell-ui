@@ -4,8 +4,8 @@ import MetaItemWrapper from './MetaItemWrapper'
 import { ItemType, MetaPage,MetaGroup, MetaFormItem } from "@/core/types";
 import MetaElements from './element';
 import getComponent from '@/components';
-import '@/assets/page.less'
 import '@/assets/form.less'
+import '@/assets/page.less'
 const { Panel } = Collapse;
 const MetaFormLayout = forwardRef((props: any, _ref: any) => {
   const [form] = Form.useForm();
@@ -37,7 +37,9 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
       key={item.apiKey || item.label}
       setFieldValue={(value) => setFieldValue(value)}
       data={props.data}
-      {...item}
+      loadData
+      {...item} 
+      param = {props.param}
     />)
   }
   const renderCollapse = (groups: MetaGroup[])=> {

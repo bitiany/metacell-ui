@@ -1,27 +1,26 @@
 import { useEffect,useRef, useState } from 'react';
 import MetaFormLayout from '@/core/form/MetaForm';
-import {Layout} from '@/config/layout';
 import { message } from 'antd';
+import {Layout} from '@/config/layout';
 import { useStorage } from '@/redux';
 import { useRequest } from '@/utils/requests';
 import { getLayoutByApiKey } from '@/api/metapage';
 import api from '@/api'
 const FromLayout = (props: any) => {
   const formRef: any = useRef<any>('')
-  const {apiKey, refs, data} = props;
+  const {apiKey, refs, data, param} = props;
   const [layout, setLayout] = useState<any>()
   const [system] = useStorage("setSystem")
   const request = useRequest()
-  const onSubmit = async (callback:any) => {
+  const onSubmit = async (callback:any, param?:any) => {
     try {
       const values = await formRef.current.validateFields();
-      request(api(apiKey)?.save({...data,...values})).then((resp:any) => {
+      const saveData = {...param, ...data,...values}
+      request(api(apiKey)?.save(saveData)).then((resp:any) => {
         if(resp?.success){
           message.info('保存成功');
-          callback()
+          callback(saveData)
         }
-      }).catch((resp:any) =>{
-        message.error(resp.data?.message);
       })
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
@@ -38,11 +37,12 @@ const FromLayout = (props: any) => {
         setLayout( (layoutConfig && JSON.stringify(layoutConfig) !== "{}") ? (layoutConfig.type === "json" ? JSON.parse(layoutConfig.config) : {}) : Layout[props.apiKey])
       }
     })
+    return () => {}
     // eslint-disable-next-line
-  },[request, apiKey])
+  },[apiKey])
   return (
     <div>
-      {layout && <MetaFormLayout apiKey={apiKey} onRef={onRef} layout={layout} data={data}></MetaFormLayout>}
+      {layout && <MetaFormLayout apiKey={apiKey} onRef={onRef} layout={layout} data={data} param={param}/>}
     </div>
   )
 }

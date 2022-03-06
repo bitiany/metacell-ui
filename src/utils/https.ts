@@ -1,14 +1,9 @@
 import axios , {AxiosRequestConfig, AxiosResponse} from 'axios'
-// import {AUTH_TOKEN, TENANT_ID} from './constants'
 import { message } from 'antd';
 axios.defaults.timeout = 10000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 axios.interceptors.request.use((config:AxiosRequestConfig) => {
-  // config.headers[AUTH_TOKEN] = window.localStorage.getItem(AUTH_TOKEN)
-  // if(window.localStorage.getItem(TENANT_ID)){
-  //   config.headers[TENANT_ID] = window.localStorage.getItem(TENANT_ID)
-  // }
   return config;
 }, (error: any) => {
 
@@ -22,6 +17,7 @@ axios.interceptors.response.use((res: AxiosResponse) => {
     return {}
   }
 }, (error :any) => {
+  console.log(error.response)
   message.error(error.response.data.message)
   return error.response.data;
 });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { JsonEditor as Editor } from 'jsoneditor-react';
-import 'jsoneditor/dist/jsoneditor.css'
+// import 'jsoneditor/dist/jsoneditor.css'
 
 /**
  * JsonEditor

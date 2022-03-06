@@ -4,10 +4,11 @@ import { Table, Space, Button } from "antd";
 import { RedoOutlined } from '@ant-design/icons'
 import { MetaTableProps, MetaTableItem, ItemType } from "@/core/types"
 import MetaTableHeader from './MetaTableHeader'
-import { useEvent } from '@/utils/hooks'
-import * as Formats from '@/core/format'
 import { filterDropdown } from './Filters'
 import { useStorage } from '@/redux'
+import { useEvent } from '@/utils/hooks'
+import * as Formats from '@/core/format'
+import * as Controls from '@/components/control'
 import "@/assets/table.less";
 
 const MetaTable = (props: MetaTableProps) => {
@@ -16,33 +17,20 @@ const MetaTable = (props: MetaTableProps) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const [panes, addTabPane] = useStorage("addTabPane", "panes")
   const { pathname } = useLocation()
+  const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: props.apiKey, data: {}, component: "form" })
   useEffect(() => {
     setSelectedKeys((props.columns || [])
       .filter((col) => col.selected)
       .map((col: any) => col.apiKey))
   }, [props.columns])
-  const getColumnSearchProps = (item: MetaTableItem) => ({
-    filterDropdown: item.filterabled
-      ? ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => {
-        return filterDropdown({
-          ...item,
-          setSelectedKeys,
-          confirm,
-          clearFilters,
-        });
-      }
-      : null,
-  });
+  
 
   const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
     if (props.onChange) {
       props.onChange(pagination, filters, sorter, extra)
     }
   }
-  const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: props.apiKey, data: {}, component: "form" })
-  const add = () => {
-    showProvider(() => { })
-  }
+
   const navigateComp = (nav: any) => {
     const { item } = nav
     if (nav.redirect) {
@@ -64,19 +52,33 @@ const MetaTable = (props: MetaTableProps) => {
       }], "add")
     }
   }
-  const format = (item: MetaTableItem, text: any, record: any) => {
-    const format = ItemType[item.itemType] + "Format";
-    if (item.primaryProperty) {
-      return (<span
-        className="meta-table-primary"
-        onClick={() => navigateComp({ redirect: props.redirect, item: item, record: record })}
-      >
-        {Formats.default[format](item, text, record)}
-      </span>)
-    }
-    return Formats.default[format](item, text, record);
-  };
-  const setItem = useCallback((item: MetaTableItem)=>{
+  
+  let columns = useMemo(() => {
+    const getColumnSearchProps = (item: MetaTableItem) => ({
+      filterDropdown: item.filterabled
+        ? ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => {
+          return filterDropdown({
+            ...item,
+            setSelectedKeys,
+            confirm,
+            clearFilters,
+          });
+        }
+        : null,
+    });
+      const format = (item: MetaTableItem, text: any, record: any) => {
+        const format = ItemType[item.itemType] + "Format";
+        if (item.primaryProperty) {
+          return (<span
+            className="meta-table-primary"
+            onClick={() => navigateComp({ redirect: props.redirect, item: item, record: record })}
+          >
+            {Formats.default[format](item, text, record)}
+          </span>)
+        }
+        return Formats.default[format](item, text, record);
+      };
+    const setItem = (item: MetaTableItem) => {
       return {
         ...item,
         title: item.label,
@@ -94,26 +96,23 @@ const MetaTable = (props: MetaTableProps) => {
         ...getColumnSearchProps(item),
         render: (text: any, record: any) => format(item, text, record),
       }
-// eslint-disable-next-line
-  }, [])
-
-  let columns = useMemo(() => {
+    }
     return (props.columns || []).filter((col) =>
       selectedKeys.find((key) => key === col.apiKey)
     ).map((col: any) => setItem(col))
     // eslint-disable-next-line
   }, [selectedKeys]);
 
-  const onOperator = (type: string, e: any) => {
-    props.onOperator && props.onOperator(type, e)
-  }
-
-  const renderOperation = (operation: any[], text: any, record: any) => {
+  const renderOperation = useCallback((operation: any[], text: any, record: any) => {
     if (operation?.length >= 3) {
     } else {
-      return props.operation?.map(op => <Button key={op.name} type="dashed" onClick={(e) => onOperator(op.type, record)}>{op.name}</Button>)
+      return props.operation?.map(op => {
+        const Component = Controls.default[op.type]
+        return Component && <Component apiKey={props.apiKey} key={op.type} record={record} content={<Button type="dashed">{op.name}</Button>} emit={() => {onChange(pagination, null, null, null)}} />
+      })
     }
-  }
+    // eslint-disable-next-line
+  }, [])
   const operate = props.operation ? [{
     title: "操作", key: "opt", width: 150,
     render: (text: any, record: any) => (
@@ -138,7 +137,7 @@ const MetaTable = (props: MetaTableProps) => {
         </div>
         <div className="meta-table-wrapper-header-right">
           <Space>
-            <Button type="primary" onClick={add}>新增</Button>
+            <Button type="primary" onClick={()=>{showProvider(() => { })}}>新增</Button>
           </Space>
         </div>
       </div>

@@ -7,7 +7,6 @@ const CracoLessPlugin = require('craco-less');
 const CracoAntDesignPlugin = require('craco-antd');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 const FastRefreshCracoPlugin = require('craco-fast-refresh')
-
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 const {
@@ -19,16 +18,20 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://metacell.extrasky.cn',
+        // target: 'http://metacell.extrasky.cn',
+        target: 'http://localhost:9101',
         changeOrigin: true,
         pathRewrite: {
-          "^/api": '/api'
+          "^/api": '/'
         }
       }
     }
   },
   webpack: {
-    configure: (config, { env, paths }) => {
+    configure: (config, {
+      env,
+      paths
+    }) => {
       config.module.rules.push({
         test: /\.svg$/,
         use: ["@svgr/webpack"]
@@ -60,10 +63,7 @@ module.exports = {
         threshold: 1024,
         minRatio: 0.8
       }),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      // new webpack.ProvidePlugin({
-      //   process: 'process/browser',
-      // }),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),      
     ]
   },
   babel: {

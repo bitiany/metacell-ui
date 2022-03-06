@@ -1,7 +1,7 @@
 import {getSystem,saveSystem, getDatasource, deleteSystem,getSystemList, deleteDatasource, saveDatasource, 
   listDatasource} from './aps'
   import {getApplication,  listApplication, getApplcation, saveApplication, deleteApplication, listResource, saveModule, deleteModule} from './application'
-import { saveMenu, deleteMenu } from './menu'
+import { saveMenu, deleteMenu, getMenu } from './menu'
 import {saveOrg, deleteOrg, userPage} from './uac'
 import {getMetaPageList} from '@/api/metapage'
  const api = (apiKey?: string)=>{
@@ -43,7 +43,7 @@ import {getMetaPageList} from '@/api/metapage'
       delete: deleteMenu,
       save: saveMenu,
       list: listResource,
-      get: getApplication
+      get: getMenu
     }
   }else if (apiKey === "module"){
     return {
