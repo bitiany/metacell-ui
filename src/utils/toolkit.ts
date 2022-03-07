@@ -25,8 +25,22 @@ const evil = (fn:string) => {
   return fun()
 }
 
+const empty = (data?:any) => {
+  if(typeof data === "string"){
+    return data || data.length === 0
+  }
+  if(Array.isArray(data)){
+    return !(data && data.length === 0)
+  }
+  if(typeof data === "object"){
+    return  Object.keys(data).length === 0
+  }
+  return true;
+}
+
 export {
   evil,
+  empty,
   at,
   queryParam,
   hash,

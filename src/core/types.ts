@@ -12,25 +12,13 @@ export interface PickOption{
 
 export interface MetaItem {
   label?: string;
-  apiKey?: string;
+  apiKey: string;
   itemType: number;
   extInfo?: any;
   pickOptions?: PickOption[],
   helpText?: string;
   defaultValue?: string;
 }
-
-// 表单
-// export interface MetaFormItemProps extends MetaItem {
-//   editabled?: boolean;
-//   required?: boolean;
-//   control?: any;
-//   defaultValue?: string;
-//   data?:any;
-//   component?:any;
-//   setFieldValue?:(...data:any) =>void;
-// }
-
 
 export interface MetaFormItem extends MetaItem{
   required?: boolean;
@@ -42,6 +30,7 @@ export interface MetaFormItem extends MetaItem{
   data?:any;
   loadData?:boolean;
   param?:any;
+  colspan?:number;
 }
 
 export interface MetaForm {
@@ -60,6 +49,7 @@ export interface MetaGroup{
   collapse?:boolean;
   control?:MetaControl;
   items?: MetaFormItem[];
+  colspan?:number;
 }
 
 export interface MetaPage {

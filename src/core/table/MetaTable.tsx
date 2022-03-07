@@ -37,7 +37,7 @@ const MetaTable = (props: MetaTableProps) => {
       navigate(props.redirect, { state: { ...nav.record } })
     } else {
       const pane = panes?.filter((p: any) => p.key === item.apiKey)[0]
-      const path = pane ? pane.path : pathname + "/" + item.control?.component + "?" + item.apiKey + "=" + nav.record[item.apiKey] + "&apiKey=" + item.control?.apiKey
+      const path = pane ? pane.path : pathname + "/" + item.control?.component.toLowerCase() + "/" + nav.record[item.apiKey]
       navigate(path, { state: { data: { ...nav.record }, apiKey: item.control?.apiKey } })
       if (pane) {
         return

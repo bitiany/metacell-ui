@@ -30,7 +30,7 @@ const Menu = (props: any) => {
   }
   useEffect(() => {
     const queryAppList = async () => {
-      const resp: any = request(api("system").list({}))
+      const resp: any = await request(api("system").list({}))
       return resp
     }
     queryAppList().then((resp: any) => {

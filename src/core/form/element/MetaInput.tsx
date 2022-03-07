@@ -1,8 +1,8 @@
-import React, { useState,useEffect } from "react";
+import { useState,useEffect } from "react";
 import { Input } from "antd";
-import { MetaItem } from '@/core/types'
-
-interface MetaInputProps extends MetaItem {
+import { MetaFormItem } from '@/core/types'
+import { empty } from '@/utils/toolkit'
+interface MetaInputProps extends MetaFormItem {
   value: string;
   data: any;
   apiKey: string;
@@ -11,6 +11,7 @@ interface MetaInputProps extends MetaItem {
 }
 
 const MetaInput = (props: MetaInputProps) => {
+
   const [value, setValue] = useState(null)
   useEffect(() => {
     setValue(props.data && props.data[props.apiKey])
@@ -24,14 +25,15 @@ const MetaInput = (props: MetaInputProps) => {
 
   }
   const placeholder = "请输入" + props.label;
+  const {data , editabled} = props
   return (
     <Input
       allowClear
       name={props.apiKey}
       placeholder={placeholder}
-      disabled={props.editabled}
       onChange={onChange}
       {...props.extInfo}
+      readOnly={!empty(data) && editabled !== undefined && !props.editabled}
       value={value}
     />
   );
