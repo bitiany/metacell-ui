@@ -1,9 +1,11 @@
-import { useEffect, forwardRef } from "react";
-import { Form, Collapse, Space, Row } from "antd";
+import { useEffect, forwardRef, Suspense } from "react";
+import { Form, Collapse, Space, Row, Col, Button, message, Divider } from "antd";
 import MetaItemWrapper from './MetaItemWrapper'
-import { ItemType, MetaPage, MetaGroup, MetaFormItem } from "@/core/types";
+import { ItemType, MetaPage, MetaGroup, MetaFormItem, MetaHeader } from "@/core/types";
 import MetaElements from './element';
 import getComponent from '@/components';
+import { useRequest } from '@/utils/requests';
+import api from '@/api/api2'
 import '@/assets/form.less'
 import '@/assets/page.less'
 const { Panel } = Collapse;
@@ -11,6 +13,7 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
   const [form] = Form.useForm();
   const { data } = props;
   const layout: MetaPage = props.layout
+  const request = useRequest()
 
   const onFinish = (values: any) => {
     console.log(values)
@@ -21,7 +24,7 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
       form.setFieldsValue(data)
     }
     // eslint-disable-next-line
-  }, [props])
+  }, [data])
   const setFieldValue = (data: any) => {
     if (form) {
       form.setFieldsValue(data);
@@ -34,7 +37,8 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
         state: { ...item, apiKey: item?.control?.apiKey }
       })
         || MetaElements["Meta" + ItemType[item.itemType]]
-      return (item.itemType === 0 ? (<Component key={item.apiKey || item.label} {...item} />) : (<MetaItemWrapper loadData
+
+      return (item.itemType === 0 ? (<Component key={item.apiKey || item.label} {...item} data={props.data} param={props.param} />) : (<MetaItemWrapper loadData
         key={item.apiKey || item.label}
         component={Component}
         setFieldValue={(value) => setFieldValue(value)}
@@ -52,7 +56,7 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
         {groups.map((group: MetaGroup, index: number) => {
           const Component = group.control ? getComponent({ name: group.control?.component, state: {} }) : null
           return (<Panel header={group.title} key={index}>
-            {Component ? <Component /> : renderItems(group.items, group.colspan)}
+            {Component ? <Component  {...group} data={props.data} param={props.param} setFieldValue={(value: any) => setFieldValue(value)} /> : renderItems(group.items, group.colspan)}
           </Panel>)
         })}
       </Collapse>
@@ -63,16 +67,55 @@ const MetaFormLayout = forwardRef((props: any, _ref: any) => {
     const newItems = [...items || []]
     const rows: any[] = []
     if (newItems) {
-      while (newItems.length > 0) {
-        rows.push(newItems?.splice(0, colspan))
+      if (colspan && colspan > 0) {
+        while (newItems.length > 0) {
+          rows.push(newItems?.splice(0, colspan))
+        }
+      } else {
+        rows.push(newItems)
       }
     }
     return rows?.map((item: MetaFormItem[], index: number) => <Row key={index}>{itemWrapper(item, colspan)}</Row>)
   }
+  const renderHeader = (header: MetaHeader) => {
+    const onSubmit = async (callback: any, param?: any) => {
+      try {
+        const values = await form.validateFields();
+        const saveData = { ...param, ...data, ...values }
+        request(api.save(layout.apiKey, saveData)).then((resp: any) => {
+          if (resp?.success) {
+            message.info('保存成功');
+            callback(saveData)
+          }
+        })
+        console.log(saveData)
+      } catch (errorInfo) {
+        console.log('Failed:', errorInfo);
+      }
+    };
+    return <div>
+      <Row>
+        <Col span={12}><span style={{
+          "fontSize": "18px", "height": "53px", "fontFamily": "PingFang SC", "fontWeight": 500, "paddingLeft": "20px"
+        }}>{header.title}</span> </Col>
+        <Col span={12} className={"form-head-tools"}>
+          <Space>
+            {
+              header.widget && header.widget.button.main?.map((btn: any) => <Button key={btn.code} type={btn.showType} onClick={() => { onSubmit(() => { }) }}>{btn.name}</Button>)
+            }
+          </Space>
+        </Col>
+        <Divider />
+      </Row>
+    </div>
+  }
 
   return (<div style={{ padding: "0 10px" }}>
     <Form name="basic" onFinish={onFinish} form={form} validateTrigger={["onChange", "onBlur"]}>
-      {layout.groups ? renderCollapse(layout.groups) : renderItems(layout.items, 1)}
+      {layout.header && renderHeader(layout.header)}
+      <Suspense fallback={null}>
+        {layout ? (layout.groups ? renderCollapse(layout.groups) : renderItems(layout.items, 1)) : null}
+      </Suspense>
     </Form>
   </div>)
 })

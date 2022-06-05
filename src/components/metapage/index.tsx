@@ -15,6 +15,7 @@ const MetaPage = (props: any) => {
 
   const { data } = props;
   useEffect(() => {
+    console.log(data)
     if (data) {
       setLayout(data.type === "json" ? JSON.parse(data.config) : null)
     }

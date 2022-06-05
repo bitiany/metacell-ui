@@ -23,7 +23,9 @@ const TreeNode = (props: any) => {
       </Tooltip>
     </div>
     <div style={{ alignSelf: 'center', marginLeft: 10 }} >
-      <Delete apiKey={apiKey} record={treeNode} emit={() => {}} content={<MinusCircleOutlined />} />
+      <Delete apiKey={apiKey} record={treeNode} emit={() => {
+        props.emit("delete")
+      }} content={<MinusCircleOutlined />} />
     </div>
   </div>)
 }
@@ -39,7 +41,7 @@ const MetaTree = (props: MetaTreeProps) => {
   const { data, apiKey, emit, param, height } = props;
   const [nodeTreeItem, setNodeTreeItem] = useState<any>({})
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
-  const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: apiKey, data: {...param, parentId: nodeTreeItem.id }, component: "form" })
+  const showProvider = useEvent("showProvider", { title: "新增", widget: "modal", apiKey: apiKey, data: {...param, parentId: nodeTreeItem.id }, component: "form" })
   const onSelect = (selectedKeys: React.Key[], info: any) => {
     setSelectedKeys(selectedKeys.map(key => key.toString()))
     setNodeTreeItem({})
@@ -70,7 +72,12 @@ const MetaTree = (props: MetaTreeProps) => {
     /> : <Result icon={<PlusOutlined onClick={() => { }} />} />
     }
     {(JSON.stringify(nodeTreeItem) === "{}") ? null : 
-    <TreeNode apiKey={apiKey} treeNode={nodeTreeItem} showProvider={showProvider} emit={()=> {emit("refresh")}}/>}
+    <TreeNode apiKey={apiKey} treeNode={nodeTreeItem} showProvider={showProvider} emit={(type:string)=> {
+      if(type ==="delete"){
+        setNodeTreeItem({})
+      }
+      emit("refresh")
+    }}/>}
   </div>)
 }
 export default MetaTree

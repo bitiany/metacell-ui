@@ -1,26 +1,27 @@
 import { Mapper, Autowire } from '@/redux'
-import { UserType } from './types'
+// import { UserType } from './types'
 class UserInfo {
   @Autowire("userInfo")
   store(){
     return {
-      userName: null,
+      tokenType: null,
       accessToken: null,
-      userId: null,
-      passportId: null,
-      tenants: null,
-      selectTenant: null
+      userInfo: null
     }
   } 
 
   @Mapper()
-  setUserInfo(state: any, userInfo:UserType){
-    return {...userInfo}
+  setUserInfo(state: any, userInfo:any){
+    if(JSON.stringify(userInfo) === "{}"){
+      return userInfo;
+    }
+    return {...state,...userInfo}
   }
-  @Mapper()
-  selectTenant(state: any, tenantId: number){
-    return {...state, tenantId}
-  }
+  // @Mapper()
+  // selectTenant(state: any, tenantId: number){
+  //   console.log(state,  tenantId)
+  //   return {...state, tenantId}
+  // }
 }
 
 export default UserInfo

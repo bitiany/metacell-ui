@@ -12,8 +12,7 @@ const DeleteControl = (props: DeleteProps) => {
   const req = useRequest()
   const { record, content, apiKey, emit } = props;
   const onConfirm = () => {
-    console.log(record.id)
-    const request = api(apiKey).delete(record.id)
+    const request = api(apiKey).delete(apiKey, record.id)
     req(request).then((resp: any) => {
       emit && emit()
       if(resp.success){

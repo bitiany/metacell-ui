@@ -19,7 +19,7 @@ const MetaItemWrapper: FC<MetaFormItem> = (props: MetaFormItem, data?: any) => {
         <div className="meta-item-wrapper">
           <Col span={span[1]}>
             <React.Suspense fallback={<div>loading...</div>}>
-                <Component {...props} key={props.apiKey}/>
+                <Component {...props} key={props.apiKey} data={props.data}/>
             </React.Suspense>
           </Col>
         </div>

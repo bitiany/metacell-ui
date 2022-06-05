@@ -5,11 +5,11 @@ const DrawerProvider = (props: any) => {
   const modalRef: any = useRef({ submit: null })
   const { apiKey, component } = props;
   const onClose = () => {
-    props.setVisible(false);
+    props.setVisible(false, false);
   };
   const handleOk = () => {
     modalRef.current.submit(()=>{
-      props.setVisible(false)
+      props.setVisible(false, true)
     })
   };
   const Component = getComponent({ name: component, state: {} })
@@ -32,11 +32,9 @@ const DrawerProvider = (props: any) => {
         }
       >
         {
-          Component ? (
-            <React.Suspense fallback={null}>
-              <Component apiKey={apiKey} refs={modalRef}></Component>
+            <React.Suspense fallback={<div>error</div>}>
+              {Component ? <Component apiKey={apiKey} refs={modalRef}></Component> : null}
             </React.Suspense>
-          ) : null
         }
       </Drawer>
     </div>

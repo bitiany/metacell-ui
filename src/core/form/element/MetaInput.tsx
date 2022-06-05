@@ -12,9 +12,11 @@ interface MetaInputProps extends MetaFormItem {
 
 const MetaInput = (props: MetaInputProps) => {
 
+  const {data , editabled} = props
   const [value, setValue] = useState(null)
   useEffect(() => {
     setValue(props.data && props.data[props.apiKey])
+    props.setFieldValue(data, false)
     // eslint-disable-next-line
   }, [props.data])
   const onChange = (e: any, value: any) => {
@@ -25,7 +27,6 @@ const MetaInput = (props: MetaInputProps) => {
 
   }
   const placeholder = "请输入" + props.label;
-  const {data , editabled} = props
   return (
     <Input
       allowClear

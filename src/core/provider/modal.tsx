@@ -6,7 +6,7 @@ interface ModalProps {
   visible: boolean;
   title: string;
   apiKey: string;
-  setVisible: (v: boolean) => void;
+  setVisible: (v: boolean, reload: boolean) => void;
   component?:string;
   data?:any;
 }
@@ -15,11 +15,11 @@ const ModalProvider = (props: ModalProps) => {
   const modalRef: any = useRef({submit: null})
   const handleOk = () => {
     modalRef.current.submit(()=>{
-      props.setVisible(false)
+      props.setVisible(false, true)
     })
   };
   const handleCancel = () => {
-    props.setVisible(false);
+    props.setVisible(false, false);
   };
 
   const {apiKey, component} = props;

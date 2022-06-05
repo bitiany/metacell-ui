@@ -1,59 +1,6 @@
 import { MetaFormConfig } from '@/core/types'
 
 export const Layout:MetaFormConfig = {
-  module: {
-    apiKey: "module",
-    title: "",
-    items:[
-      {
-        label: "应用编码",
-        apiKey: "appId",
-        itemType: 1,
-        required: true,
-        hidden: true,
-        helpText: "应用编码",
-        extInfo: {
-          suffix: "",
-          prefix: "",
-          maxLength: 32,
-        },
-      },
-      {
-        label: "模块编码",
-        apiKey: "moduleCode",
-        itemType: 1,
-        required: true,
-        helpText: "模块编码",
-        extInfo: {
-          suffix: "",
-          prefix: "",
-          maxLength: 32,
-        },
-      },
-      {
-        label: "模块名称",
-        apiKey: "moduleName",
-        itemType: 1,
-        required: true,
-        helpText: "模块名称",
-        extInfo: {
-          maxLength: 32,
-        }
-      },
-      {
-        label: "描述",
-        apiKey: "decription",
-        itemType: 1,
-        required: false,
-        helpText: "描述",
-        extInfo: {
-          suffix: "",
-          prefix: "",
-          maxLength: 10,
-        },
-      },
-    ]
-    },
   // menu: {
   //   apiKey: "menu",
   //   items:[
@@ -153,7 +100,7 @@ export const Layout:MetaFormConfig = {
     items:[
       {
         label: "名称",
-        apiKey: "orgName",
+        apiKey: "name",
         itemType: 1,
         hidden: false,
         helpText: "组织机构名称",
@@ -188,7 +135,7 @@ export const Layout:MetaFormConfig = {
         }
       },
       {
-        label: "拼音",
+        label: "拼音2222",
         apiKey: "spell",
         itemType: 1,
         required: false,

@@ -19,10 +19,10 @@ const Detail: React.FC = (props: any) => {
         const res = await request(getLayoutByApiKey(system.systemId, apiKey, 3))
         if (res.success) {
             const layout = res.result.type === "json" ? JSON.parse(res.result.config) : {}
-            setLayout(layout)
-            request(api(layout.apiKey).get(data.id)).then((resp: any) => {
+            request(api(layout.apiKey).get(layout.apiKey, data.id)).then((resp: any) => {
                 if (resp.success) {
                     setApp(resp.result)
+                    setLayout(layout)
                 }
             })
         }
@@ -32,6 +32,7 @@ const Detail: React.FC = (props: any) => {
         return () => { }
         // eslint-disable-next-line
     }, [apiKey])
+    console.log("===>", layout)
     return !empty(layout) ? (<MetaFormLayout apiKey={"apiKey"} onRef={onRef} layout={layout} data={{...app}} param={{}}/>) : (<div></div>)
 }
 export default Detail

@@ -6,12 +6,14 @@ import { Provider } from "./redux";
 import MainLayout from "@/layout";
 import LoginPage from '@/page/login'
 import ErrorPage from "./page/errorPage";
+
 import theme from "@/theme.less";
 
 import AppInfo from '@/store/AppInfo'
 import UserInfo from '@/store/UserInfo'
 import MenuStore from '@/store/Menu'
 import System from '@/store/System'
+import Application from "./page/application";
 
 new AppInfo()
 new UserInfo()
@@ -29,12 +31,13 @@ const App: FC = (props: any) => {
         <Provider>
           <Router basename={"/"}>
             <Routes>
+              <Route path="/login" element={<LoginPage />} />
               <Route
                 path="*"
                 key="main"
                 element={<MainLayout {...props} />}
               />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/application" element={<Application />} />
               <Route path="/404" element={<ErrorPage />} />
             </Routes>
           </Router>

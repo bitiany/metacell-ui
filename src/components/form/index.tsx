@@ -1,7 +1,6 @@
 import { useEffect,useRef, useState } from 'react';
 import MetaFormLayout from '@/core/form/MetaForm';
 import { message } from 'antd';
-import {Layout} from '@/config/layout';
 import { useStorage } from '@/redux';
 import { useRequest } from '@/utils/requests';
 import { getLayoutByApiKey } from '@/api/metapage';
@@ -16,7 +15,7 @@ const FromLayout = (props: any) => {
     try {
       const values = await formRef.current.validateFields();
       const saveData = {...param, ...data,...values}
-      request(api(apiKey)?.save(saveData)).then((resp:any) => {
+      request(api(apiKey)?.save(apiKey, saveData)).then((resp:any) => {
         if(resp?.success){
           message.info('保存成功');
           callback(saveData)
@@ -34,16 +33,12 @@ const FromLayout = (props: any) => {
     request(getLayoutByApiKey(system.systemId, apiKey, 2)).then((resp: any) => {
       if (resp.success) {
         const layoutConfig = resp.result
-        setLayout( (layoutConfig && JSON.stringify(layoutConfig) !== "{}") ? (layoutConfig.type === "json" ? JSON.parse(layoutConfig.config) : {}) : Layout[props.apiKey])
+        setLayout(layoutConfig)
       }
     })
     return () => {}
     // eslint-disable-next-line
-  },[apiKey])
-  return (
-    <div>
-      {layout && <MetaFormLayout apiKey={apiKey} onRef={onRef} layout={layout} data={data} param={param}/>}
-    </div>
-  )
+  },[])
+  return layout ? <MetaFormLayout apiKey={apiKey} onRef={onRef}  layout={layout} data={data} param={param}/> : null
 }
 export default FromLayout;

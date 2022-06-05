@@ -5,7 +5,7 @@ export const getSystem = (param?:any)=>{
 }
 
 export const getSystemList = (param?:any)=>{
-  return doGet("/api/msc/v1/system/list");
+  return doGet("/api/v1/system/list");
 }
 
 export const deleteSystem = (id:string) => {

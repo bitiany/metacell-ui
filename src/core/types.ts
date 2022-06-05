@@ -4,6 +4,15 @@ export interface MetaControl {
   apiKey?: string;
   format?: (data:any) =>void
 }
+
+export interface Button {
+  name:string;
+  code: string;
+  showType: string;
+  child?: Button[]
+  hidden?: boolean
+}
+
 export interface PickOption{
   name: string;
   code: string;
@@ -51,9 +60,24 @@ export interface MetaGroup{
   items?: MetaFormItem[];
   colspan?:number;
 }
+export interface Widget {
+  button:{
+    main: Button[]
+    table: Button[]
+  }
+ 
+}
+
+export interface MetaHeader {
+  title?:string;
+  content?: any;
+  widget?: Widget;
+}
 
 export interface MetaPage {
   apiKey: string;
+  title?:string;
+  header?:MetaHeader;
   items?: MetaFormItem[];
   groups?: MetaGroup[];
 }
@@ -79,12 +103,14 @@ export type MetaTableProps = {
   label?:string;
   apiKey: string;
   title?:string;
+  widget?:any;
   columns?: MetaTableItem[];
   data?: any[];
   preference?:boolean;
   pagination?: any;
   redirect?:any;
   operation?:any[] 
+  loading?: boolean
   onChange?: (pagination:any, filters:any, sorter:any, extra:any)=>void;
   onOperator?:(type:string, data:any) => void
 }
@@ -103,5 +129,6 @@ export const ItemType = {
   3: "Date",
   4: "Select",
   5: "Switch",
-  10: "Reference"
+  10: "Reference",
+  11: "Reference",
 }

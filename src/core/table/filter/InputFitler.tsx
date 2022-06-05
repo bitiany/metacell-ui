@@ -14,8 +14,10 @@ class InputFilter extends React.Component<MetaFilter, any> {
       this.props.setSelectedKeys([keyword]);
       this.props.confirm();
     }else{
+      console.log("clear")
       this.props.setSelectedKeys([])
       this.props.clearFilters();
+      this.props.confirm();
     }
   }
   render() {

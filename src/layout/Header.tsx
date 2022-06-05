@@ -40,15 +40,14 @@ const AppHeader = (props: any) => {
   const changeSystem = (sys: any) => {
     if(panes) panes.length = 0
     addTabPane([], "clear")
-    setSystem({systemId: sys.systemId})
-    console.log("change system", system,sys)
+    setSystem({systemId: sys.id})
+    console.log(system)
     navigate("/")
   }
   const renderMenuItemIcon = (sys:any) => {
     const Icon = Icons[sys.icon];
-    return <Icon key={sys.systemId} onClick={() => changeSystem(sys)}/>;
+    return <Icon key={sys.id} onClick={() => changeSystem(sys)}/>;
   };
-
   return (
     <Header className={style.header}>
       <div className="toggleMenu">
@@ -65,7 +64,7 @@ const AppHeader = (props: any) => {
       <div className={style.right}>
         {systems ? systems.map((sys: any) => {
           return (
-            <div className="mr15" style={{ paddingTop: "5px" }} key={sys.systemId}>
+            <div className="mr15" style={{ paddingTop: "5px" }} key={sys.id}>
               {sys.icon ? renderMenuItemIcon(sys) :(<a className="fr webTheme" onClick={() => changeSystem(sys)}>{sys.name}</a>)}
             </div>
         )}) : null}

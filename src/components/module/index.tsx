@@ -1,64 +1,55 @@
-// import { useState } from 'react';
-// import { List, Radio, Popconfirm, message } from 'antd';
-// import { AppstoreAddOutlined, EditOutlined, MinusCircleOutlined } from '@ant-design/icons'
+import { useState, useEffect } from 'react';
+import { Row, Col } from 'antd';
+// import MetaTree from '@/components/tree'
 // import Table from '@/components/table';
-// import { useEvent } from '@/utils/hooks'
-// import { useRequest } from '@/utils/requests';
-// import api from '@/api';
+import AsyncProvider from '@/core/provider'
+import { useEvent, clear } from '@/utils/hooks'
+// const { Search } = Input;
 const Module = (props: any) => {
-
-  // const showProvider = useEvent("showProvider", { title: "新增", container: "modal", apiKey: props.apiKey, data: { appId: props.data.appId }, component: "form" })
-  // const addModule = () => {
-  //   // showProvider(() => { })
+  // const {data} = props;
+  // const [condition, setCondition] = useState<any>()
+  const [provider, setProvider] = useState<any>({ visible: false, data: {} })
+  const listener = useEvent("showProvider", { apiKey: "module" })
+  useEffect(() => {
+    listener((data: any) => {
+      console.log(data)
+      setProvider({ visible: true, ...data })
+    })
+    // setCondition({moduleId: "", appId: data.id})
+    return () => { clear("showProvider", { apiKey: "module" }) }
+    // eslint-disable-next-line
+  }, [])
+  // const modules:any[] = useMemo(() => {
+  //   if(data.modules && Array.isArray(data.modules)){
+  //       return data.modules.map((mod:any) => {
+  //         return {key: mod.id, title: mod.moduleName, ...mod}
+  //       })
+  //   }
+  //   // eslint-disable-next-line
+  // }, [])
+  // const onChange = (type?:string, module?:any) => {
+  //   console.log(type, module)
+  //   if(type === "selected"){
+  //     // setCondition({moduleId: module.id, appId: data.id})
+  //   }
   // }
-  // const request = useRequest()
-  // const [loading] = useState(false)
-  // const loadMore =
-  //   !loading ? (
-  //     <div
-  //       style={{
-  //         textAlign: 'center',
-  //         marginTop: 12,
-  //         height: 32,
-  //         lineHeight: '32px',
-  //       }}
-  //     >
-  //       <AppstoreAddOutlined size={100} onClick={addModule} />
-  //       {/* <Button onClick={onLoadMore}>添加</Button> */}
-  //     </div>
-  //   ) : null;
-  // const onDelete = (data: any) => {
-  //   request(api("module").delete(data.id)).then((resp: any) => {
-  //     if (resp.success) {
-  //       message.success('删除成功');
-  //     }
-  //   })
-  // }
-  // const onChange = (e: any) => {
-  //   console.log('radio checked', e);
-  //   // setValue(e.target.value);
-  // };
-  return (<div style={{ display: "flex" }}>
-    <div style={{ width: "25%", marginRight: "30px" }}>
-      1214
-      {/* <List
-        // header={<div></div>}
-        bordered
-        loadMore={loadMore}
-        dataSource={props.data.modules}
-        renderItem={(item: any) => (
-          <List.Item actions={[<EditOutlined />,
-          <Popconfirm title={"确认是否删除" + item.name} onConfirm={() => { onDelete(item) }} okText="确定" cancelText="取消">
-            <MinusCircleOutlined />
-          </Popconfirm>]}>
-            <Radio onChange={() => { onChange(item) }}><div onClick={() => onDelete(item)}>{item.moduleName}</div></Radio>
-          </List.Item>
-        )}
-      /> */}
-    </div>
-    <div style={{ width: "70%"}}>
-      {/* <Table apiKey="resource"/> */}
-    </div>
+  return (<div>
+    <Row>
+      <Col span={8}>
+        {/* <div>
+          <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={() => { }} />
+        </div>
+        <div>
+            <MetaTree apiKey={"module"} param={{ appId: data.id }} data={modules} emit={onChange} height={40}/>
+        </div> */}
+      </Col>
+      <Col span={16}>
+          <div style={{ paddingLeft: "20px" }}>
+             {/* {condition && <Table apiKey={"resource"} condition={condition}></Table>} */}
+          </div>
+        </Col>
+    </Row>
+    <AsyncProvider {...provider} setVisible={(visible: boolean) => setProvider({ visible: visible })} />
   </div>)
 }
 

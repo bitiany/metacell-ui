@@ -4,11 +4,10 @@ import { Form, Input, Button, List } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import ReactCanvasNest from 'react-canvas-nest'
 import Base64 from 'base-64';
-import { hash } from '@/utils/toolkit'
+// import { hash } from '@/utils/toolkit'
 import { useStorage } from '@/redux'
 import { useRequest } from '@/utils/requests'
-import { doLogin } from '@/api/uac'
-import { getSysConfigMapByHost } from '@/api/system'
+import { doLogin, findUserInfo, getTenant } from '@/api/uac'
 import Logo from '@/assets/img/logo.png'
 import './login.less'
 interface Props { }
@@ -16,44 +15,42 @@ interface Props { }
 const LoginForm: FC<Props> = () => {
   const history = useNavigate()
   const [userInfo, setUserInfo] = useStorage("setUserInfo")
-  const [tenant, selectTenant] = useStorage("selectTenant")
   const [system, setSystem] = useStorage("setSystem")
-  const [selectTenants, setSelectTenants] = useState<any[]>([])
+  const [selectTenants] = useState<any[]>([])
   const request = useRequest()
   useEffect(() => {
+    setUserInfo({})
     if (userInfo.accessToken) {
       history('/')
       return;
     }
-    const hostname = window.location.host.split(":")[0];
-    request(getSysConfigMapByHost(hostname)).then((resp: any) => {
-      setSystem(resp.result)
-    })
     // eslint-disable-next-line
-  }, [])
+  }, [history])
 
   const onFinish = (values: any): void => {
     const { userName, password } = values
-    const pwd = hash.aes(password, userName)
-
-    const Authorization = "Basic " + Base64.encode(system.systemId + ":" + system.systemId)
+    // const pwd = hash.aes(password, userName)
+    const Authorization = "Basic " + Base64.encode( "ipaas:ipaas")
 
     request(doLogin({
-      username: userName, password: pwd,
+      username: userName, password: password,
       grant_type: "password"
     }, { Authorization })).then((resp: any) => {
       if (resp.code === 401) {
         setUserInfo({ userName: null, token: null, permission: [] })
       } else {
-        const tenants = resp.result?.tenants
         const user = resp.result;
-        delete user.tenants;
-        setUserInfo({ accessToken: user.access_token, userId: user.userId, userName: user.userName, tokenType: user.token_type })
-        setSelectTenants(tenants)
-        if (selectTenants && selectTenants.length >= 2) {
-          console.log(userInfo)
-          history('/')
-        }
+        request(findUserInfo(user.access_token, user.token_type)).then((res: any) => {
+          setUserInfo({accessToken: user.access_token, tokenType: user.token_type, userInfo: res.result })
+          console.log("success login:",  userInfo, {accessToken: user.access_token, tokenType: user.token_type, userInfo: res.result })
+          request(getTenant(user.access_token, user.token_type)).then((res:any) => {
+            const tenant = res.result
+            setSystem({systemId: tenant.masterSystemId, systems: [...tenant.systems]})
+            console.log(system)
+            history('/')
+
+          })
+        })
       }
 
     }).catch((err:any) => {
@@ -94,8 +91,8 @@ const LoginForm: FC<Props> = () => {
     </Form>
   )
   const changeTenant = (tenantInfo: any) => {
-    selectTenant(tenantInfo.tenantId)
-    console.log("changeTenant:", tenant)
+    // selectTenant(tenantInfo.tenantId)
+    // console.log("changeTenant:", tenant)
     history('/')
   }
   const ListView = (tenant: any[]) => {

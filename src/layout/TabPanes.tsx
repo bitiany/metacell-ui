@@ -1,11 +1,12 @@
-import React, { FC,useRef, useState, useEffect, useMemo } from 'react'
+import React, { FC, useRef, useState, useEffect, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Tabs, Dropdown, Alert, Spin } from 'antd'
 import { SyncOutlined } from '@ant-design/icons'
 import { useStorage } from '@/redux'
 import TabMenu from './TabMenu';
 import Components from "@/page";
-import { at,queryParam } from '@/utils/toolkit'
+import AsyncProvider from '@/core/provider'
+import { at, queryParam } from '@/utils/toolkit'
 import getComponent from '@/components';
 import style from './module/TabPanes.module.less'
 interface Props {
@@ -30,19 +31,20 @@ const TabPanes: FC<Props> = (props: any) => {
   const [panes, addTabPane] = useStorage("addTabPane", "panes")
   const [menus] = useStorage("setMenus")
   const [selectedKeys, setSelectedKeys] = useStorage("setSelectedKeys", "selectedKeys")
-  const para:any = useMemo(() => {
+  const para: any = useMemo(() => {
     return queryParam(search) || {}
   }, [search])
-  const {apiKey} = para
-
+  const { apiKey } = para
   const pane = panes?.filter((p: any) => (uri_parse(p.path) === pathname && (!apiKey || apiKey === p.key)))[0]
   let item = at.find(menus, (m: any) => (uri_parse(m.path) === pathname && (!apiKey || apiKey === m.apiKey)), "children")
+
   useEffect(() => {
     if (pane) {
       if (pathRef.current !== pathname + search) {
         setSelectedKeys([pane.key])
       }
     } else {
+      console.log(item)
       if (!item || selectedKeys?.includes(item.apiKey)) { return }
       addTabPane([{
         title: item.name,
@@ -53,7 +55,8 @@ const TabPanes: FC<Props> = (props: any) => {
       }], "add")
     }
     pathRef.current = pathname + search
-  })
+    // eslint-disable-next-line
+  }, [pathname, search])
 
   const onEdit = (targetKey: any, action: any) => {
     switch (action) {
@@ -101,7 +104,7 @@ const TabPanes: FC<Props> = (props: any) => {
     setIsReload(true)
     setTimeout(() => {
       setIsReload(false)
-    }, 1000)
+    }, 100)
   }
 
   return (<div>
@@ -130,9 +133,9 @@ const TabPanes: FC<Props> = (props: any) => {
               </Dropdown>
             } key={pane.key} closable={pane.closabled} >
               {!isReload && selectedKeys?.includes(pane.key) ? (
-                <div className={"content"} style={{ paddingTop: 10,minHeight:"88vh" }}>
+                <div className={"content"} style={{ paddingTop: 10, minHeight: "88vh" }}>
                   <React.Suspense fallback={<div>loading...</div>}>
-                    <Component {...pane}/>
+                    <Component {...pane} />
                   </React.Suspense>
                 </div>
               ) : (
@@ -140,13 +143,14 @@ const TabPanes: FC<Props> = (props: any) => {
                   <Spin spinning={isReload}>
                     <Alert message="刷新中..." type="info" />
                   </Spin>
-                  
+
                 </div>
               )}
             </TabPane>)
         })
       }
-  </Tabs>
+    </Tabs>
+    <AsyncProvider apiKey callback={() => { refreshTab() }} />
   </div >)
 }
 export default TabPanes

@@ -1,5 +1,8 @@
 import DeleteControl from "./delete"
 
 export default {
-  Delete: DeleteControl,
+  delete: DeleteControl,
+  closePage: () => {
+    
+  }
 } as any;

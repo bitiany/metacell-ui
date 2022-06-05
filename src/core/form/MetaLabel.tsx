@@ -6,6 +6,7 @@ export interface MetaInputProps extends MetaItem {
   editabled?: boolean;
   required?: boolean;
   defaultValue?: any;
+  data?:any;
   setFieldValue:(key:any, val:any, change?: boolean) => void;
 }
 

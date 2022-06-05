@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import * as Icons from "@ant-design/icons";
+import * as Icons from "@ant-design/icons"; 
 import { Link } from 'react-router-dom';
 import { IMenu } from '@/store/types';
 import { useStorage } from '@/redux'

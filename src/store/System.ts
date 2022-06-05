@@ -5,7 +5,8 @@ class System {
   store(){
     return {
       systemId: "",
-      policy: {}
+      policy: {},
+      systems: []
     }
   } 
   @Mapper()

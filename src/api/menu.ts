@@ -1,16 +1,16 @@
 import {doPost, doGet, doDel} from '@/utils/requests'
 export const getMenuTree = (param?:any)=>{
-  return doGet("/api/msc/v1/menu/tree", {...param});
+  return doGet("/api/v1/menu/tree", {...param});
 }
 
 export const saveMenu = (data:any) => {
-  return doPost("/api/msc/v1/menu", {...data});
+  return doPost("/api/v1/menu", {...data});
 }
 
 export const deleteMenu = (id:String) => {
-  return doDel("/api/msc/v1/menu/" + id);
+  return doDel("/api/v1/menu/" + id);
 }
 
 export const getMenu = (id:string) => {
-  return doGet("/api/msc/v1/menu/" + id)
+  return doGet("/api/v1/menu/" + id)
 }

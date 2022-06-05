@@ -14,7 +14,7 @@ export const deleteApplication = (data:any) => {
 }
 
 export const listApplication = () => {
-  return doGet("/api/msc/v1/application/list")
+  return doGet("/api/v1/app/list")
 }
 
 
@@ -24,7 +24,7 @@ export const getApplication = (id:string) => {
 
 
 export const listResource = (param?:any) => {
-  return doGet("/api/msc/v1/application/resource/" + param.appId,  {...param})
+  return doGet("/api/v1/app/resource/" + param.appId,  {...param})
 }
 
 export const saveModule = (data:any)=>{
@@ -33,4 +33,8 @@ export const saveModule = (data:any)=>{
 
 export const deleteModule = (id:string) => {
   return doDel("/api/msc/v1/application/module/" + id)
+}
+
+export const getResource = (param:any) =>{
+  return doPost("/api/msc/v1/application/resource/page",param)
 }

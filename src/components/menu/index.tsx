@@ -1,5 +1,5 @@
-import { useRef,useState, useEffect } from "react";
-import { Input,Row, Col, Divider, Alert, Button } from "antd";
+import { useRef, useState, useEffect } from "react";
+import { Input, Row, Col, Divider, Alert, Button } from "antd";
 import { useStorage } from '@/redux'
 import { getMenuTree } from '@/api/menu'
 import MetaDropdown from '@/components/dropdown'
@@ -72,17 +72,17 @@ const Menu = (props: any) => {
     // eslint-disable-next-line
   }, [])
   const onSubmit = async (callback?: any) => {
-    formRef.current.submit((data:any) => {
+    formRef.current.submit((data: any) => {
       setSelectNode(data)
     }, { systemId: sysId, parentId: selectNode.parentId, id: selectNode.id })
   }
   const showAlert = "右键点击该组织可以进行添加、删除操作"
 
-  const getMenuById = (data:any) => {
-    request(api("menu").get(data.id)).then((resp:any)=> {
-     if(resp.success){
-       setSelectNode(resp.result)
-     }
+  const getMenuById = (data: any) => {
+    request(api("menu").get("menuForm", data.id)).then((resp: any) => {
+      if (resp.success) {
+        setSelectNode(resp.result)
+      }
     })
   }
   return (
@@ -99,25 +99,25 @@ const Menu = (props: any) => {
       </div>
       <Divider />
       <div>
-      <Row justify="space-between">
-        <Col span={8}>    
-          <div>
-            <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={() => { }} />
-            {showAlert && <Alert type="info" showIcon message={showAlert} />}
-          </div>
-          <div>
-            {(tree && tree.length > 0) && <MetaTree apiKey={"menu"} param={{ systemId: sysId, parentId: selectNode.parentId, id: selectNode.id }} data={tree} emit={(type?: string, data?: any) => { getMenuById(data) }} />}
-          </div>
-        </Col>
-        <Col span={16}>
-          <div style={{ paddingLeft: "20px" }}>
-            <FromLayout apiKey={"menu"} refs={formRef} data={selectNode} param={{systemId: sysId}}/>
-            <Row>
-              <Col span={1} offset={22}><Button onClick={onSubmit}>保存</Button></Col>
-            </Row>
-          </div>
-        </Col>
-      </Row>
+        <Row justify="space-between">
+          <Col span={8}>
+            <div>
+              <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={() => { }} />
+              {showAlert && <Alert type="info" showIcon message={showAlert} />}
+            </div>
+            <div>
+              {(tree && tree.length > 0) && <MetaTree apiKey={"menu"} param={{ systemId: sysId, parentId: selectNode.parentId}} data={tree} emit={(type?: string, data?: any) => { getMenuById(data) }} />}
+            </div>
+          </Col>
+          <Col span={16}>
+            <div style={{ paddingLeft: "20px" }}>
+              <FromLayout apiKey={"menuForm"} refs={formRef} data={selectNode} param={{ systemId: sysId }} />
+              <Row>
+                <Col span={1} offset={22}><Button onClick={onSubmit}>保存</Button></Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
         <AsyncProvider {...provider} setVisible={(visible: boolean) => setProvider({ visible: visible })} />
       </div>
     </div>

@@ -10,15 +10,18 @@ const MetaDate = (props: any) => {
   const placeholder = "请输入" + props.label;
   const showTime = props.extInfo?.dateType === 2;
   return (
-    <DatePicker
-      allowClear
-      name={props.apiKey}
-      showTime={showTime}
-      placeholder={placeholder}
-      disabled={props.editabled}
-      onChange={onChange}
-      style={{ width: "100%" }}
-    />
+    <div>
+      <DatePicker
+        allowClear
+        name={props.apiKey}
+        showTime={showTime}
+        placeholder={placeholder}
+        disabled={props.editabled}
+        onChange={onChange}
+        style={{ width: "100%" }}
+      />
+
+    </div>
   );
 }
 
