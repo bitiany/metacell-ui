@@ -8,7 +8,7 @@ const toCamelCase = function(str:string) {
 }
 
 const queryParam = (query: string) => {
-  let params = {}
+  const params = {}
   query.replace(pattern, (substring: any, ...args: any[]) => {
     const [key, value] = args;
     if (key) {

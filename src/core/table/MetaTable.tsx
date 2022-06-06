@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Table, Space, Button } from "antd";
 import { RedoOutlined } from '@ant-design/icons'
@@ -72,7 +72,7 @@ const MetaTable = (props: MetaTableProps) => {
       </Space>
     )
   }] : []
-  let columns = useMemo(() => {
+  const columns = useMemo(() => {
     const getColumnSearchProps = (item: MetaTableItem) => ({
       filterDropdown: item.filterabled
         ? ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => {

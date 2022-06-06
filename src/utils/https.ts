@@ -6,7 +6,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   return config;
 }, (error: any) => {
-
+  console.log(error)
 });
 
 axios.interceptors.response.use((res: AxiosResponse) => {
@@ -14,6 +14,7 @@ axios.interceptors.response.use((res: AxiosResponse) => {
     return res.data && res.data;
   } if (res.status === 401) {
     window.localStorage.removeItem("persist:root")
+    setTimeout(() => window.location.href = "/login", 100)
   } else {
     message.error(res.data.errorCode || res.data.message)
     return {}

@@ -1,4 +1,4 @@
-import { Statistic, Card, Row, Col } from 'antd'
+import React, { Statistic, Card, Row, Col } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
 
 const Dashboard = (props:any)=>{
